@@ -1,0 +1,4 @@
+life_lab_rest:
+    resource: "@LifeLabRestBundle/Resources/config/routing.yml"
+    prefix:   /
+
