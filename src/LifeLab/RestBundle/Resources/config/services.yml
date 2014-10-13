@@ -1,0 +1,4 @@
+services:
+#    life_lab_rest.example:
+#        class: LifeLab\RestBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
