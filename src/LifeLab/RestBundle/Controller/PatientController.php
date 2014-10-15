@@ -44,4 +44,40 @@ class PatientController extends FOSRestController
         $view = $this->view($patient, $statusCode);
         return $this->handleView($view);
     }
+    
+    
+    
+    public function getFileTreatmentsAction($id) {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
+        $patient = $repository->find($id);
+        if ($patient == NULL) {
+            throw new NotFoundHttpException('Patient not found');
+        }
+        $medicalFile = $patient->getMedicalFile();
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('Medical file not found');
+        }
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Treatment');
+        $treatments = $repository->findByMedicalFile($medicalFile->getId());
+        $statusCode = 200;
+        $view = $this->view($treatments, $statusCode);
+        return $this->handleView($view);
+    }
+    
+    public function getFilePrescriptionsAction($id) {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
+        $patient = $repository->find($id);
+        if ($patient == NULL) {
+            throw new NotFoundHttpException('Patient not found');
+        }
+        $medicalFile = $patient->getMedicalFile();
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('Medical file not found');
+        }
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Prescription');
+        $prescriptions = $repository->findByMedicalFile($medicalFile->getId());
+        $statusCode = 200;
+        $view = $this->view($prescriptions, $statusCode);
+        return $this->handleView($view);
+    }
 }
