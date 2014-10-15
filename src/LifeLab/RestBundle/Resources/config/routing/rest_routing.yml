@@ -1,0 +1,34 @@
+patient:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\PatientController
+
+
+file:
+    type:       rest
+    parent:     patient
+    resource:   LifeLab\RestBundle\Controller\MedicalFileController
+    
+medicine:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\MedicineController
+
+allergy:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\AllergyController
+    
+illness:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\IllnessController
+    
+doctor:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\DoctorController
+
+
+treatment:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\TreatmentController
+    
+prescription:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\PrescriptionController

@@ -2,37 +2,7 @@ init:
     path:       /secretinitialization/
     methods:    [GET]
     defaults:   { _controller: LifeLabRestBundle:Init:index }
-    
-patient:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\PatientController
 
-
-file:
+rest_routing:
     type:       rest
-    resource:   LifeLab\RestBundle\Controller\MedicalFileController
-    
-medicine:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\MedicineController
-
-allergy:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\AllergyController
-    
-illness:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\IllnessController
-    
-doctor:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\DoctorController
-
-
-treatment:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\TreatmentController
-    
-prescription:
-    type:       rest
-    resource:   LifeLab\RestBundle\Controller\PrescriptionController
+    resource:   "@LifeLabRestBundle/Resources/config/routing/rest_routing.yml"
