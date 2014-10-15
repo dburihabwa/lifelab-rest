@@ -29,6 +29,12 @@ class Patient
      */
     private $name;
 
+    /**
+     * @ORM\OneToOne(targetEntity="MedicalFile")
+     * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false, unique=true)
+     */
+    private $medicalFile;
+
 
     /**
      * Get id
@@ -61,5 +67,28 @@ class Patient
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set medicalFile
+     *
+     * @param \LifeLab\RestBundle\Entity\MedicalFile $medicalFile
+     * @return Patient
+     */
+    public function setMedicalFile(\LifeLab\RestBundle\Entity\MedicalFile $medicalFile)
+    {
+        $this->medicalFile = $medicalFile;
+
+        return $this;
+    }
+
+    /**
+     * Get medicalFile
+     *
+     * @return \LifeLab\RestBundle\Entity\MedicalFile
+     */
+    public function getMedicalFile()
+    {
+        return $this->medicalFile;
     }
 }

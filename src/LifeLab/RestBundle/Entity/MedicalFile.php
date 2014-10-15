@@ -23,13 +23,6 @@ class MedicalFile
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Patient")
-     * @ORM\JoinColumn(name="patient_id", referencedColumnName="id", nullable=false, unique=true)
-     */
-    private $patient;
-
-
-    /**
      * @ORM\ManyToMany(targetEntity="Allergy")
      * @ORM\JoinTable(
      *                  name="allergies_in_medical_file",
@@ -48,6 +41,17 @@ class MedicalFile
      *               )
      */
     private $illnesses;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->allergies = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->illnesses = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->treatments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prescriptions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -57,36 +61,6 @@ class MedicalFile
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set patient
-     *
-     * @param \LifeLab\RestBundle\Entity\Patient $patient
-     * @return MedicalFile
-     */
-    public function setPatient(\LifeLab\RestBundle\Entity\Patient $patient = null)
-    {
-        $this->patient = $patient;
-
-        return $this;
-    }
-
-    /**
-     * Get patient
-     *
-     * @return \LifeLab\RestBundle\Entity\Patient 
-     */
-    public function getPatient()
-    {
-        return $this->patient;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->allergies = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -153,5 +127,71 @@ class MedicalFile
     public function getIllnesses()
     {
         return $this->illnesses;
+    }
+
+    /**
+     * Add treatments
+     *
+     * @param \LifeLab\RestBundle\Entity\Treatment $treatments
+     * @return MedicalFile
+     */
+    public function addTreatment(\LifeLab\RestBundle\Entity\Treatment $treatments)
+    {
+        $this->treatments[] = $treatments;
+
+        return $this;
+    }
+
+    /**
+     * Remove treatments
+     *
+     * @param \LifeLab\RestBundle\Entity\Treatment $treatments
+     */
+    public function removeTreatment(\LifeLab\RestBundle\Entity\Treatment $treatments)
+    {
+        $this->treatments->removeElement($treatments);
+    }
+
+    /**
+     * Get treatments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTreatments()
+    {
+        return $this->treatments;
+    }
+
+    /**
+     * Add prescriptions
+     *
+     * @param \LifeLab\RestBundle\Entity\Prescription $prescriptions
+     * @return MedicalFile
+     */
+    public function addPrescription(\LifeLab\RestBundle\Entity\Prescription $prescriptions)
+    {
+        $this->prescriptions[] = $prescriptions;
+
+        return $this;
+    }
+
+    /**
+     * Remove prescriptions
+     *
+     * @param \LifeLab\RestBundle\Entity\Prescription $prescriptions
+     */
+    public function removePrescription(\LifeLab\RestBundle\Entity\Prescription $prescriptions)
+    {
+        $this->prescriptions->removeElement($prescriptions);
+    }
+
+    /**
+     * Get prescriptions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPrescriptions()
+    {
+        return $this->prescriptions;
     }
 }

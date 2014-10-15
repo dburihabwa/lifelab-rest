@@ -19,6 +19,19 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
  */
 class PatientController extends FOSRestController
 {
+    public function getAllAction()
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
+        $patients = $repository->findAll();
+
+        if ($patients == NULL) {
+            throw new NotFoundHttpException('not found');
+        }
+        $statusCode = 200;
+        $view = $this->view($patients, $statusCode);
+        return $this->handleView($view);
+    }
+
     public function getAction($id)
     {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');

@@ -30,11 +30,6 @@ class InitController extends Controller
         $em->persist($illness);
         $em->flush();
         
-        $patient = new Patient();
-        $patient->setName('Terry Gilliam');
-        $em->persist($patient);
-        $em->flush();
-        
         $medicine = new Medicine();
         $medicine->setName('doliprane');
         $medicine->setDosage('500 mg');
@@ -43,7 +38,6 @@ class InitController extends Controller
         $em->flush();
         
         $medicalFile = new MedicalFile();
-        $medicalFile->setPatient($patient);
         
         $allergies = $medicalFile->getAllergies();
         $medicalFile->addAllergy($allergy);
@@ -52,6 +46,12 @@ class InitController extends Controller
         $medicalFile->addIllness($illness);
         
         $em->persist($medicalFile);
+        $em->flush();
+        
+        $patient = new Patient();
+        $patient->setName('Terry Gilliam');
+        $patient->setMedicalFile($medicalFile);
+        $em->persist($patient);
         $em->flush();
         
         $doctor = new Doctor();
@@ -65,7 +65,7 @@ class InitController extends Controller
         $prescription->setDoctor($doctor);
         $em->persist($prescription);
         $em->flush();
-        
+
         $treatment = new Treatment();
         $treatment->setMedicine($medicine);
         $treatment->setDate(new \DateTime());
