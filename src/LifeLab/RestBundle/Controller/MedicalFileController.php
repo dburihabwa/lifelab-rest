@@ -15,18 +15,19 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 
 /**
- * @RouteResource("files")
+ * @RouteResource("file")
  */
 class MedicalFileController extends FOSRestController
 {   
     public function getAction($id)
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
-        $medicalFile = $repository->find($id);
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
+        $patient = $repository->find($id);
         
-        if ($medicalFile == NULL) {
+        if ($patient == NULL || $patient->getMedicalFile() == NULL) {
             throw new NotFoundHttpException('not found');
         }
+        $medicalFile = $patient->getMedicalFile();
         $statusCode = 200;
         $view = $this->view($medicalFile, $statusCode);
         return $this->handleView($view);
