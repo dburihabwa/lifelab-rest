@@ -4,12 +4,15 @@ namespace LifeLab\RestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Treatment
  *
  * @ORM\Table()
  * @ORM\Entity()
+ * @ExclusionPolicy("all")
  */
 class Treatment
 {
@@ -19,6 +22,7 @@ class Treatment
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -26,6 +30,7 @@ class Treatment
      * @var datetime
      *
      * @ORM\Column(name="date", type="date")
+     * @Expose
      */
     private $date;
 
@@ -33,6 +38,7 @@ class Treatment
      * @var integer
      *
      * @ORM\Column(name="frequency", type="string")
+     * @Expose
      */
     private $frequency;
 
@@ -40,18 +46,21 @@ class Treatment
      * @var integer
      *
      * @ORM\Column(name="units", type="integer")
+     * @Expose
      */
     private $units;
 
     /**
      * @ORM\ManyToOne(targetEntity="Medicine")
      * @ORM\JoinColumn(name="medicine_id", referencedColumnName="id", nullable=false)
+     * @Expose
      */
     private $medicine;
 
     /**
      * @ORM\ManyToOne(targetEntity="Prescription")
      * @ORM\JoinColumn(name="prescription_id", referencedColumnName="id", nullable=true)
+     * @Expose
      */
     private $prescription;
     
