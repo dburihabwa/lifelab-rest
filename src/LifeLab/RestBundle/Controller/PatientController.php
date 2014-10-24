@@ -6,6 +6,8 @@ use LifeLab\RestBundle\Entity\Patient;
 use LifeLab\RestBundle\Entity\PatientRepository;
 use LifeLab\RestBundle\Form\PatientType;
 
+use LifeLab\RestBundle\Entity\MedicalFile;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,6 +102,29 @@ class PatientController extends FOSRestController
         $statusCode = 200;
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $em->persist($patient);
+            $em->flush();
+        } else {
+            $statusCode = 500;
+        }
+        $view = $this->view($patient, $statusCode);
+        return $this->handleView($view);
+    }
+
+    /**
+     * Creates a new Patient
+     * @param   Request Http Request
+     */
+    public function postAction(Request $request) {
+        $patient = new Patient();
+        $form = $this->createForm(new PatientType(), $patient, array('csrf_protection' => false, 'method' => 'POST'));
+        $form->handleRequest($request);
+        $statusCode = 200;
+        $medicalFile = new MedicalFile();
+        $patient->setMedicalFile($medicalFile);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($medicalFile);
             $em->persist($patient);
             $em->flush();
         } else {
