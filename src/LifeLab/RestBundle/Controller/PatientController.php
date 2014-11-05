@@ -28,9 +28,6 @@ class PatientController extends FOSRestController
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
         $patients = $repository->findAll();
 
-        if ($patients == NULL) {
-            throw new NotFoundHttpException('not found');
-        }
         $statusCode = 200;
         $view = $this->view($patients, $statusCode);
         return $this->handleView($view);
