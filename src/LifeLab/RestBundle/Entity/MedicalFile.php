@@ -4,6 +4,8 @@ namespace LifeLab\RestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
+
 
 /**
  * MedicalFile
@@ -15,6 +17,7 @@ class MedicalFile
 {
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -23,6 +26,7 @@ class MedicalFile
     private $id;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Allergy")
      * @ORM\ManyToMany(targetEntity="Allergy")
      * @ORM\JoinTable(
      *                  name="allergies_in_medical_file",
@@ -33,6 +37,7 @@ class MedicalFile
     private $allergies;
     
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Illness")
      * @ORM\ManyToMany(targetEntity="Illness")
      * @ORM\JoinTable(
      *                  name="illnesses_in_medical_file",

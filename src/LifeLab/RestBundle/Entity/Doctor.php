@@ -4,6 +4,9 @@ namespace LifeLab\RestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation\Type;
+
+
 /**
  * Doctor
  *
@@ -14,6 +17,7 @@ class Doctor
 {
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -23,6 +27,7 @@ class Doctor
 
     /**
      * @var string
+     * @Type ("string")
      *
      * @ORM\Column(name="name", type="string")
      */

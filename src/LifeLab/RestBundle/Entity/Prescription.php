@@ -5,6 +5,8 @@ namespace LifeLab\RestBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Type;
+
 
 /**
  * Prescription
@@ -17,6 +19,7 @@ class Prescription
 {
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -26,7 +29,8 @@ class Prescription
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \DateTime     
+     * @Type ("DateTime")
      *
      * @ORM\Column(name="date", type="date")
      * @Expose
@@ -34,6 +38,7 @@ class Prescription
     private $date;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Doctor")
      * @ORM\ManyToOne(targetEntity="Doctor")
      * @ORM\JoinColumn(name="doctor_id", referencedColumnName="id", nullable=false)
      * @Expose
@@ -41,6 +46,7 @@ class Prescription
     private $doctor;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Doctor")
      * @ORM\ManyToOne(targetEntity="MedicalFile")
      * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false)
      */

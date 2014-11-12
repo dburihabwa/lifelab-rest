@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Treatment
@@ -18,6 +19,7 @@ class Treatment
 {
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -28,6 +30,7 @@ class Treatment
 
     /**
      * @var datetime
+     * @Type ("DateTime")
      *
      * @ORM\Column(name="date", type="date")
      * @Expose
@@ -35,7 +38,8 @@ class Treatment
     private $date;
 
     /**
-     * @var integer
+     * @var string
+     * @Type ("string")
      *
      * @ORM\Column(name="frequency", type="string")
      * @Expose
@@ -44,6 +48,7 @@ class Treatment
 
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="units", type="integer")
      * @Expose
@@ -51,6 +56,7 @@ class Treatment
     private $units;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Medicine")
      * @ORM\ManyToOne(targetEntity="Medicine")
      * @ORM\JoinColumn(name="medicine_id", referencedColumnName="id", nullable=false)
      * @Expose
@@ -58,6 +64,7 @@ class Treatment
     private $medicine;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Prescription")
      * @ORM\ManyToOne(targetEntity="Prescription")
      * @ORM\JoinColumn(name="prescription_id", referencedColumnName="id", nullable=true)
      * @Expose
@@ -65,6 +72,7 @@ class Treatment
     private $prescription;
     
     /**
+     * @Type ("LifeLab\RestBundle\Entity\MedicalFile")
      * @ORM\ManyToOne(targetEntity="MedicalFile")
      * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false)
      */
