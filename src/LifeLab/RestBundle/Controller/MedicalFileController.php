@@ -26,7 +26,11 @@ class MedicalFileController extends AbstractController {
     
     protected function getRepository() {
         return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
-    }  
+    }
+
+    protected function getEntityName() {
+        return 'LifeLab\RestBundle\Entity\MedicalFile';
+    }
     
     public function postTreatmentsAction($id, Request $request) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');

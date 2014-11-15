@@ -26,6 +26,9 @@ class PatientController extends AbstractController {
         return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
     }
 
+    protected function getEntityName() {
+        return 'LifeLab\RestBundle\Entity\Patient';
+    }
     
     public function getFileTreatmentsAction($id) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');

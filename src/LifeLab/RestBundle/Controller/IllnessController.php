@@ -16,5 +16,9 @@ class IllnessController extends AbstractController {
     protected function getRepository() {
         return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Illness');
     }
+
+    protected function getEntityName() {
+        return 'LifeLab\RestBundle\Entity\Illness';
+    }
 }
 

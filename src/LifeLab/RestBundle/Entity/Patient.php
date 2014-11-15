@@ -4,6 +4,8 @@ namespace LifeLab\RestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use JMS\Serializer\Annotation\Type;
+
 /**
  * Patient
  *
@@ -15,6 +17,7 @@ class Patient
 {
     /**
      * @var integer
+     * @Type ("integer")
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -24,12 +27,14 @@ class Patient
 
     /**
      * @var string
+     * @Type ("string")
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
+     * @Type ("LifeLab\RestBundle\Entity\Allergy")
      * @ORM\OneToOne(targetEntity="MedicalFile")
      * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false, unique=true)
      */

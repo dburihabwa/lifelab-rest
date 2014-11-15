@@ -17,6 +17,10 @@ class PrescriptionController extends AbstractController {
     protected function getRepository() {
         return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Prescription');
     }
+
+    protected function getEntityName() {
+        return 'LifeLab\RestBundle\Entity\Prescription';
+    }
 }
 
 

@@ -7,11 +7,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use JMS\Serializer\SerializerBuilder;
+
 use FOS\RestBundle\Controller\FOSRestController;
 
 abstract class AbstractController extends FOSRestController {
 
     abstract protected function getRepository();
+
+    abstract protected function getEntityName();
 
     public function cgetAction() {
         $repository = $this->getRepository();
@@ -59,6 +63,26 @@ abstract class AbstractController extends FOSRestController {
             return $this->handleView($view);
         }
 
+        $statusCode = 200;
+        $view = $this->view($entity, $statusCode);
+        return $this->handleView($view);
+    }
+
+    public function postAction(Request $request) {
+        $json = $request->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $entity = $serializer->deserialize($json, $this->getEntityName(), 'json');
+        $statusCode = 500;
+        $manager = $this->getDoctrine()->getManager();
+        try {
+            $manager->persist($entity);
+            $manager->flush();
+        } catch (Exception $unusedException) {
+            $statusCode = 500;
+            $message = 'Could not post new resource';
+            $view = $this->view($message, $statusCode);
+            return $this->handleView($view);
+        }
         $statusCode = 200;
         $view = $this->view($entity, $statusCode);
         return $this->handleView($view);
