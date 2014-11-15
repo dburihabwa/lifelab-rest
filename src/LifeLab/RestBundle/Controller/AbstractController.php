@@ -9,8 +9,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use FOS\RestBundle\Controller\FOSRestController;
 
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-
 abstract class AbstractController extends FOSRestController {
     abstract protected function getRepository();
     public function cgetAction() {

@@ -2,18 +2,17 @@
 
 namespace LifeLab\RestBundle\Controller;
 
+use LifeLab\RestBundle\Controller\AbstractController;
+
 use LifeLab\RestBundle\Entity\Patient;
 use LifeLab\RestBundle\Entity\PatientRepository;
 use LifeLab\RestBundle\Form\PatientType;
 
 use LifeLab\RestBundle\Entity\MedicalFile;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use FOS\RestBundle\Controller\FOSRestController;
 
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
@@ -21,32 +20,12 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 /**
  * @RouteResource("patients")
  */
-class PatientController extends FOSRestController
-{
-    public function getAllAction()
-    {
-        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
-        $patients = $repository->findAll();
+class PatientController extends AbstractController {
 
-        $statusCode = 200;
-        $view = $this->view($patients, $statusCode);
-        return $this->handleView($view);
+    protected function getRepository() {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
     }
 
-    public function getAction($id)
-    {
-        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
-        $patient = $repository->find($id);
-        
-        if ($patient == NULL) {
-            throw new NotFoundHttpException('not found');
-        }
-        $statusCode = 200;
-        $view = $this->view($patient, $statusCode);
-        return $this->handleView($view);
-    }
-    
-    
     
     public function getFileTreatmentsAction($id) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');

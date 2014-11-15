@@ -6,7 +6,8 @@ use LifeLab\RestBundle\Entity\MedicalFile;
 use LifeLab\RestBundle\Entity\Medicine;
 use LifeLab\RestBundle\Entity\Treatment;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use LifeLab\RestBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,24 +19,15 @@ use FOS\RestBundle\Controller\FOSRestController;
 
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
-
 /**
- * @RouteResource("file")
+ * @RouteResource("files")
  */
-class MedicalFileController extends FOSRestController
-{   
-    public function getAction($id)
-    {
+class MedicalFileController extends AbstractController {
+    
+    protected function getRepository() {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
-        $medicalFile = $repository->find($id);
-        if ($medicalFile == NULL) {
-            throw new NotFoundHttpException('not found');
-        }
-        $statusCode = 200;
-        $view = $this->view($medicalFile, $statusCode);
-        return $this->handleView($view);
-    }
-
+    }  
+    
     public function postTreatmentsAction($id, Request $request) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
         $medicalFile = $repository->find($id);
