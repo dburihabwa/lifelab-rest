@@ -86,4 +86,40 @@ class MedicalFileController extends AbstractController {
         $view = $this->view($treatment, $statusCode);
         return $this->handleView($view);
     }
+
+    public function postPrescriptionsAction($id, Request $request) {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
+        $medicalFile = $repository->find($id);
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('not found');
+        }
+        $json = $request->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $prescription = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Prescription', 'json');
+        $prescription->setMedicalFile($medicalFile);
+        $doctor = $prescription->getDoctor();
+        if ($doctor == NULL) {
+            $statusCode = 400;
+            $view = $this->view("Doctor field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        if ($prescription->getDate() == NULL) {
+            $statusCode = 400;
+            $view = $this->view("Date field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        //Retrieve actual doctor
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Doctor');
+        $actualDoctor = $repository->find($doctor->getId());
+        $prescription->setDoctor($actualDoctor);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($prescription);
+        $medicalFile->addPrescription($prescription);
+        $em->persist($medicalFile);
+        $em->flush();
+        $statusCode = 200;
+        $view = $this->view($prescription, $statusCode);
+        return $this->handleView($view);
+    }
 }
