@@ -10,7 +10,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\FOSRestController;
 
 abstract class AbstractController extends FOSRestController {
+
     abstract protected function getRepository();
+
     public function cgetAction() {
         $repository = $this->getDoctrine()->getManager();
         $entities = $repository->findAll();
@@ -29,8 +31,7 @@ abstract class AbstractController extends FOSRestController {
         return $repository->find($id);   
     }
 
-    public function getAction($id)
-    {
+    public function getAction($id) {
         $entity = $this->getEntity($id);
         
         if ($entity == NULL) {

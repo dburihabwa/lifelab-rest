@@ -25,7 +25,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 class MedicalFileController extends AbstractController {
     
     protected function getRepository() {
-        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
+        return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
     }  
     
     public function postTreatmentsAction($id, Request $request) {

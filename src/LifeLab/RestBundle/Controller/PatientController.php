@@ -23,7 +23,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 class PatientController extends AbstractController {
 
     protected function getRepository() {
-        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
+        return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Patient');
     }
 
     
