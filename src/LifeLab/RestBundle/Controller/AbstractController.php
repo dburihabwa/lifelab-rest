@@ -14,7 +14,7 @@ abstract class AbstractController extends FOSRestController {
     abstract protected function getRepository();
 
     public function cgetAction() {
-        $repository = $this->getDoctrine()->getManager();
+        $repository = $this->getRepository();
         $entities = $repository->findAll();
         $statusCode = 200;
         $view = $this->view($entities, $statusCode);
