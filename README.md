@@ -1,13 +1,19 @@
 ## Requirements
 
 * php5
-* composer
 * php driver for database of choice
 
 ## Setup the server
 
+### Install composer
 ```bash
-composer update
+curl -sS https://getcomposer.org/installer | php
+```
+
+### Install dependencies
+
+```bash
+php composer.phar update
 ```
 
 ## Start the server
