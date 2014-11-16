@@ -31,6 +31,30 @@ class MedicalFileController extends AbstractController {
     protected function getEntityName() {
         return 'LifeLab\RestBundle\Entity\MedicalFile';
     }
+
+    public function getTreatmentsAction($id) {
+        $medicalFile = $this->getEntity($id);
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('Medical file not found');
+        }
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Treatment');
+        $treatments = $repository->findByMedicalFile($medicalFile->getId());
+        $statusCode = 200;
+        $view = $this->view($treatments, $statusCode);
+        return $this->handleView($view);
+    }
+
+    public function getPrescriptionsAction($id) {
+        $medicalFile = $this->getEntity($id);
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('Medical file not found');
+        }
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Prescription');
+        $prescriptions = $repository->findByMedicalFile($medicalFile->getId());
+        $statusCode = 200;
+        $view = $this->view($prescriptions, $statusCode);
+        return $this->handleView($view);
+    }
     
     public function postTreatmentsAction($id, Request $request) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
