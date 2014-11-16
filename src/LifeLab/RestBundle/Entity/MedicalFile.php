@@ -54,8 +54,6 @@ class MedicalFile
     {
         $this->allergies = new \Doctrine\Common\Collections\ArrayCollection();
         $this->illnesses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->treatments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->prescriptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -132,71 +130,5 @@ class MedicalFile
     public function getIllnesses()
     {
         return $this->illnesses;
-    }
-
-    /**
-     * Add treatments
-     *
-     * @param \LifeLab\RestBundle\Entity\Treatment $treatments
-     * @return MedicalFile
-     */
-    public function addTreatment(\LifeLab\RestBundle\Entity\Treatment $treatments)
-    {
-        $this->treatments[] = $treatments;
-
-        return $this;
-    }
-
-    /**
-     * Remove treatments
-     *
-     * @param \LifeLab\RestBundle\Entity\Treatment $treatments
-     */
-    public function removeTreatment(\LifeLab\RestBundle\Entity\Treatment $treatments)
-    {
-        $this->treatments->removeElement($treatments);
-    }
-
-    /**
-     * Get treatments
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTreatments()
-    {
-        return $this->treatments;
-    }
-
-    /**
-     * Add prescriptions
-     *
-     * @param \LifeLab\RestBundle\Entity\Prescription $prescriptions
-     * @return MedicalFile
-     */
-    public function addPrescription(\LifeLab\RestBundle\Entity\Prescription $prescriptions)
-    {
-        $this->prescriptions[] = $prescriptions;
-
-        return $this;
-    }
-
-    /**
-     * Remove prescriptions
-     *
-     * @param \LifeLab\RestBundle\Entity\Prescription $prescriptions
-     */
-    public function removePrescription(\LifeLab\RestBundle\Entity\Prescription $prescriptions)
-    {
-        $this->prescriptions->removeElement($prescriptions);
-    }
-
-    /**
-     * Get prescriptions
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPrescriptions()
-    {
-        return $this->prescriptions;
     }
 }
