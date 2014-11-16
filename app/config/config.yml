@@ -83,3 +83,9 @@ fos_rest:
         view_response_listener: 'force'
     routing_loader:
         default_format: json
+
+services:
+    kernel.listener.reponse_headers:
+        class: LifeLab\RestBundle\EventListener\LifeLabResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
