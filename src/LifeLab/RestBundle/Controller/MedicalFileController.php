@@ -63,7 +63,6 @@ class MedicalFileController extends AbstractController {
             throw new NotFoundHttpException('not found');
         }
         $json = $request->getContent();
-        print_r($json);
         $serializer = SerializerBuilder::create()->build();
         $treatment = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Treatment', 'json');
         if ($treatment->getDate() == NULL) {
@@ -139,8 +138,6 @@ class MedicalFileController extends AbstractController {
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($prescription);
-        $medicalFile->addPrescription($prescription);
-        $em->persist($medicalFile);
         $em->flush();
         $statusCode = 200;
         $view = $this->view($prescription, $statusCode);
