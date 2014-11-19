@@ -40,7 +40,6 @@ class MedicalFileControllerTest extends WebTestCase {
 			$jsonContent);
 		$result = $client->getResponse()->getContent();
 		$newTreatment = $serializer->deserialize($result, 'LifeLab\RestBundle\Entity\Treatment', 'json');
-		print_r($result);
 		$this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
 		$this->assertObjectHasAttribute('id', $newTreatment);
 	}

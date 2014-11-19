@@ -29,6 +29,21 @@ class PatientController extends AbstractController {
     protected function getEntityName() {
         return 'LifeLab\RestBundle\Entity\Patient';
     }
+
+    /**
+     * Returns the medical file associated to a patient.
+     * @param id - id of the patient
+     */
+    public function getFileAction($id) {
+        $patient = $this->getEntity($id);
+        if ($patient == NULL) {
+            throw new NotFoundHttpException('Patient not found');
+        }
+        $medicalFile = $patient->getMedicalFile();
+        $statusCode = 200;
+        $view = $this->view($medicalFile, $statusCode);
+        return $this->handleView($view);
+    }
     
     /**
      * Modifies an existing patient
