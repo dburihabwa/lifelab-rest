@@ -31,6 +31,20 @@ class PatientController extends AbstractController {
     }
 
     /**
+     * Returns all the patients in the database stripped of their medical file.
+     */
+    public function cGetAction() {
+        $repository = $this->getRepository();
+        $patients = $repository->findAll();
+        foreach ($patients as $patient) {
+            $patient->setMedicalFile(NULL);
+        }
+        $statusCode = 200;
+        $view = $this->view($patients, $statusCode);
+        return $this->handleView($view);
+    }
+
+    /**
      * Returns the medical file associated to a patient.
      * @param id - id of the patient
      */

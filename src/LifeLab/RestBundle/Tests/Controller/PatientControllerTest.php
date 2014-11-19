@@ -17,8 +17,13 @@ class PatientControllerTest extends WebTestCase {
         $client = static::createClient();
         $client->request('GET', '/patients/all');
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $patients = json_decode($client->getResponse()->getContent());
+        $patients = json_decode($client->getResponse()->getContent(), true);
         $this->assertEquals(gettype($patients), 'array');
+        $serializer = SerializerBuilder::create()->build();
+        foreach ($patients as $p) {
+            $patient = $serializer->deserialize(json_encode($p), 'LifeLab\RestBundle\Entity\Patient','json');
+            $this->assertNull($patient->getMedicalFile());
+        }
     }
     
     /**

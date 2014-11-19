@@ -80,8 +80,11 @@ class Patient
      * @param \LifeLab\RestBundle\Entity\MedicalFile $medicalFile
      * @return Patient
      */
-    public function setMedicalFile(\LifeLab\RestBundle\Entity\MedicalFile $medicalFile)
+    public function setMedicalFile($medicalFile)
     {
+        if ($medicalFile != NULL && get_class($medicalFile) != 'LifeLab\RestBundle\Entity\MedicalFile') {
+            throw new \Exception("Argument must be NULL or of type \LifeLab\RestBundle\Entity\MedicalFile");
+        }
         $this->medicalFile = $medicalFile;
 
         return $this;
