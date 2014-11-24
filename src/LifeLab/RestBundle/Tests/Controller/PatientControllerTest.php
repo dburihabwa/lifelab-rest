@@ -35,10 +35,12 @@ class PatientControllerTest extends WebTestCase {
         $client->request('POST', '/patients', array('name' => $name));
         //Test if the patient is returned
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $patient = json_decode($client->getResponse()->getContent());
+        $jsonResponse = $client->getResponse()->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $patient = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Patient', 'json');
         $this->assertObjectHasAttribute('id', $patient);
-        $this->assertEquals($patient->name, $name);
-        $this->deletePatient($patient->id);
+        $this->assertEquals($patient->getName(), $name);
+        $this->deletePatient($patient->getId());
     }
     
     /**
@@ -49,15 +51,19 @@ class PatientControllerTest extends WebTestCase {
         $name = 'test post patient';
         $client->request('POST', '/patients', array('name' => $name));
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
-        $patient = json_decode($client->getResponse()->getContent());
+        $jsonResponse = $client->getResponse()->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $patient = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Patient', 'json');
         $this->assertObjectHasAttribute('id', $patient);
-        $this->assertEquals($patient->name, $name);
+        $this->assertEquals($patient->getName(), $name);
         $newName = 'test post patient 2';
-        $id = $patient->id;
+        $id = $patient->getId();
         $client->request('PUT', '/patients/' . $id, array('name' => $newName));
-        $patient = json_decode($client->getResponse()->getContent());
-        $this->assertEquals($patient->id, $id);
-        $this->assertEquals($patient->name, $newName);
+	$jsonResponse = $client->getResponse()->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $patient = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Patient', 'json');
+        $this->assertEquals($patient->getId(), $id);
+        $this->assertEquals($patient->getName(), $newName);
         $this->deletePatient($id);
     }
 
