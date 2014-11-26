@@ -14,7 +14,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
  */
 class MedicineController extends AbstractController {
     protected function getRepository() {
-        return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Illness');
+        return $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Medicine');
     }
 
     protected function getEntityName() {

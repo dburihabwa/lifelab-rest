@@ -36,17 +36,27 @@ class Medicine
      * @var string
      * @Type ("string")
      *
-     * @ORM\Column(name="dosage", type="string")
+     * @ORM\Column(name="shape", type="string")
      */
-    private $dosage;
+    private $shape;
+
+    /**
+     * @var string
+     * @Type ("string")
+     *
+     * @ORM\Column(name="howToTake", type="string")
+     */
+    private $howToTake;
+
 
     /**
      * @var integer
      * @Type ("integer")
      *
-     * @ORM\Column(name="dangerous", type="integer")
+     * @ORM\Column(name="dangerLevel", type="integer")
      */
-    private $dangerous;
+    private $dangerLevel;
+
 
     /**
      * Get id
@@ -82,48 +92,71 @@ class Medicine
     }
 
     /**
-     * Set dosage
+     * Set shape
      *
-     * @param string $dosage
+     * @param string $shape
      * @return Medicine
      */
-    public function setDosage($dosage)
+    public function setShape($shape)
     {
-        $this->dosage = $dosage;
+        $this->shape = $shape;
 
         return $this;
     }
 
     /**
-     * Get dosage
+     * Get shape
      *
      * @return string 
      */
-    public function getDosage()
+    public function getShape()
     {
-        return $this->dosage;
+        return $this->shape;
     }
 
     /**
-     * Set dangerous
+     * Set howToTake
      *
-     * @param integer $dangerous
+     * @param string $howToTake
      * @return Medicine
      */
-    public function setDangerous($dangerous)
+    public function setHowToTake($howToTake)
     {
-        $this->dangerous = $dangerous;
+        $this->howToTake = $howToTake;
 
         return $this;
     }
 
     /**
-     * Get dangerous
+     * Get howToTake
+     *
+     * @return string 
+     */
+    public function getHowToTake()
+    {
+        return $this->howToTake;
+    }
+
+    /**
+     * Set dangerLevel
+     *
+     * @param integer $dangerLevel
+     * @return Medicine
+     */
+    public function setDangerLevel($dangerLevel)
+    {
+        $this->dangerLevel = $dangerLevel;
+
+        return $this;
+    }
+
+    /**
+     * Get dangerLevel
      *
      * @return integer 
      */
-    public function getDangerous()
+    public function getDangerLevel()
     {
-        return $this->dangerous;
+        return $this->dangerLevel;
     }
 }
