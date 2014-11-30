@@ -1,0 +1,48 @@
+<!-- Partial view :  Medical record-->
+
+<div class="medicalRecordContents">
+  <h3 class="subTitle"> <img src="images/medicalRecordicone.jpeg"> Medical record </h3>
+  
+  <!-- Medical record contents -->
+	<ul class="list-group">
+    <li ng-repeat="item in medicalRecordContents | orderBy:predicate:reverse | offset: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage" 
+			class="list-group-item" 
+			ng-class=" { 'list-group-item-danger' : item.type == 'allergie', 'list-group-item-warning' : item.type == 'illnesse', 'list-group-item-success' : item.type == 'prescription' }">
+        <div>
+
+          <p> <span class="itemType"> {{item.type}} </span> : <span> {{item.name}} </span> </p>
+
+          <div ng-if="item.treatments !== undifined"> 
+            <p> treatments :</p>
+            <ul>
+              <li ng-repeat="treatment in item.treatments">
+                <p> {{treatment.medecine.name}}, {{treatment.medecine.dosage}} : to set {{treatment.dosage.frequency}}, from {{treatment.dosage.date}} during {{treatment.dosage.duration}}. </p>
+              </li>
+            </ul>
+          </div>
+
+	    		<p> 
+            <span class="italic" ng-if="item.doctor !== undifined"> <strong>by</strong> {{item.doctor}} </span>  
+            <span class="italic date" ng-if="item.date !== undifined"> <strong> date </strong> : {{item.date}} </span> 
+          </p>
+	       
+         </div>
+    </li>
+  </ul>
+
+  <!-- Pagination -->
+  <nav>
+ 		<ul class="pagination">
+ 			<li ng-class="prevPageDisabled()">
+        <a href ng-click="prevPage()">« Prev</a>
+      </li>
+      <li ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+        <a ui-sref="patientInformations.medicalRecord">{{n}}</a>
+      </li>
+      <li ng-class="nextPageDisabled()">
+        <a href ng-click="nextPage()">Next »</a>
+      </li>
+  	</ul>
+	</nav>
+
+</div>

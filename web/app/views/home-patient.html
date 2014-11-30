@@ -1,0 +1,23 @@
+<!-- Partial view :  Main container -->
+
+<!-- Loading -->
+<img ng-if="loading[0] === true && loading[1] === true" src="images/loading2.gif" class="loading">
+
+<!-- Patient informations -->
+<div ng-if="loading[0] === false && loading[0] === false" class="patientHome">
+
+    <div id="patientHeader">
+    	<h3> <img src="images/utilisateur2.jpeg" style="height:50px;"> {{patient.name}} </h3>
+
+    	<!-- Nav -->
+        <nav>
+        	<ul class="nav navbar-nav">
+        		<li> <a ui-sref="patientInformations.medicalRecord({id: $stateParams.id})" class="btn btn-default" ng-class="{active : $state.is('patientInformations.medicalRecord') }"> Medical record</a> </li>
+        		<li> <a class="btn btn-default"> Add prescription </a> </li>
+        		<li> <a class="btn btn-default"> Add disease </a> </li>
+        	</ul>
+        </nav>
+    </div>
+
+    <div ui-view></div>
+</div>
