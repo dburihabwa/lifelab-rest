@@ -32,6 +32,7 @@ sudo npm install -g bower
 
 *Install the angular app dependencies*
 ```bash
+cd web/
 bower install
 ```
 
