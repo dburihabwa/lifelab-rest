@@ -24,8 +24,13 @@ php app/console server:run
 
 ## Install the angular app dependencies
 
-*Requires bower*
+*if you haven't bower, install it :*
+```bash
+sudo apt-get install npm
+sudo npm install -g bower
+```
 
+*Install the angular app dependencies*
 ```bash
 bower install
 ```
