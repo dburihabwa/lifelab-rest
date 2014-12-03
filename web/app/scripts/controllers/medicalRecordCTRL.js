@@ -43,15 +43,22 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 		                date: illnesse.date
 		            });
 				});
-				medicalRecord.prescriptions.forEach(function (prescription) {
-					$scope.medicalRecordContents.push({
-		                type: 'prescription',
-		                name: prescription.description,
-		                date: prescription.date,
-		                treatments: prescription.treatments,
-		                doctor: prescription.doctor.name
-		            });
+
+				Patients.getPrescriptions(medicalRecord.id).then(function (prescriptions) {
+					prescriptions.forEach(function (prescription) {
+						$scope.medicalRecordContents.push({
+			                type: 'prescription',
+			                name: prescription.description,
+			                date: prescription.date,
+			                treatments: prescription.treatments,
+			                doctor: prescription.doctor.name
+			            });
+					});
+				}, function (error) {
+					console.error(error);
 				});
+
+
 				$rootScope.loading[1] = false; 
 			}
 		);

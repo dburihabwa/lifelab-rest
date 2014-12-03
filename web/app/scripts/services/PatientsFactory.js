@@ -15,6 +15,7 @@ app.factory('Patients', ['$resource', function($resource){
 	var Patient = $resource('/patients/:id', {id:'@id'});
 	//var File = $resource('http://demo9892644.mockable.io/patients/:id/file', {id:'@id'});
 	var File = $resource('/patients/:id/file', {id:'@id'});
+	var MedicalRecord = $resource('/files/:id/prescriptions', {id: '@id'});
 
 	var Factory = {
 
@@ -30,6 +31,10 @@ app.factory('Patients', ['$resource', function($resource){
 
 		getMedicalRecord : function(patientId) {
 			return File.get({id:patientId}).$promise ;
+		},
+
+		getPrescriptions : function (medicalRecordId) {
+			return MedicalRecord.query({id:medicalRecordId}).$promise;
 		}
 	};
 
