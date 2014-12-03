@@ -36,6 +36,12 @@ cd web/
 bower install
 ```
 
+*ATTENTION: * In order to be able to download the dependencies over an overly-firewalled network, you should run the following command (at least the first time)
+
+```bash
+git config url."https://".insteadOf git://
+```
+
 ## Run the tests
 To launch the tests, run the follwing command:
 
