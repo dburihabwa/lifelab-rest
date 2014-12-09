@@ -47,7 +47,13 @@
           url: '/medicalRecord',
           templateUrl: 'views/home-patient-medicalRecord.html',
           controller: 'medicalRecordCtrl'
-        });
+        })
+
+      .state('patientInformations.prescription', {
+        url: '/prescription',
+        templateUrl: 'views/add-prescription.html',
+        controller: 'PrescriptionCtrl'
+      });
 
         // sub state add prescription of patient's informations ...
   });

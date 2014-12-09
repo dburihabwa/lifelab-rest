@@ -40,3 +40,15 @@ app.factory('Patients', ['$resource', function($resource){
 
 	return Factory;
 }]);
+
+app.factory('Prescription', ['$resource', function ($resource) {
+	var MedicinesSearch = $resource('/medicines/search/:keyword', {keyword:'@keyword'});
+
+	var Factory = {
+		searchMedication: function (keyword) {
+			return MedicinesSearch.query({keyword: keyword}).$promise;
+		}
+	};
+
+	return Factory;
+}]);

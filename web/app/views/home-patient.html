@@ -13,7 +13,7 @@
         <nav>
         	<ul class="nav navbar-nav">
         		<li> <a ui-sref="patientInformations.medicalRecord({id: $stateParams.id})" class="btn btn-default" ng-class="{active : $state.is('patientInformations.medicalRecord') }"> Medical record</a> </li>
-        		<li> <a class="btn btn-default"> Add prescription </a> </li>
+        		<li> <a ui-sref = "patientInformations.prescription({id:{{patient.id}}})" class="btn btn-default" ng-class="{active : $state.is('patientInformations.prescription') }"> Add prescription </a> </li>
         		<li> <a class="btn btn-default"> Add disease </a> </li>
         	</ul>
         </nav>

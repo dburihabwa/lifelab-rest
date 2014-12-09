@@ -1,0 +1,36 @@
+<div class="medicalRecordContents" ng-controller="PrescriptionCtrl">
+	<h3 class = "subTitle"><img src="images/medicalRecordicone.jpeg">Add a prescription</h3>
+	<form class = "simple-form" ng-submit = "submit()" role = "form">
+		<div id = "prescriptionForm" class = "form-group">
+			<label for = "medicine">Medication</label>
+			<ui-select
+				ng-model="treatment.medicine"
+				theme = "bootstrap"
+				ng-disabled="disabled"
+	            reset-search-input="false"
+	            required>
+				<ui-select-match ng-model = "key"
+					placeholder = "Medication">{{ $select.selected.name }}</ui-select-match>
+				<ui-select-choices
+					repeat = "medicine in medicines"
+					refresh="searchMedication($select.search)"
+	             	refresh-delay="0">
+	             	<small>{{ medicine.id }} : {{ medicine.name }}</small>
+				</ui-select-choices >
+			</ui-select>
+		</div>
+		<div class = "form-group">
+			<label for = "date">Start date</label>
+			<input class = "form-control" ui-date id = "date" ng-model = "treatment.date" placeholder = "The day the treatment should start" required/>
+		</div>
+		<div class = "form-group">
+			<label for = "frequency">Frequency</label>
+			<input id = "frequency" class = "form-control" type = "text" ng-model="treatment.frequency"  placeholder = "How often should the patient take her/his medicaction" required/>
+		</div>
+		<div class = "form-group">
+			<label for = "units">Units</label>
+			<input id = "units" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.units" placeholder = "Number of units per intake" required/>
+		</div>
+		<input class = "btn btn-success pull-right" type = "submit" value = "Prescribe" />
+	</form>
+</div>
