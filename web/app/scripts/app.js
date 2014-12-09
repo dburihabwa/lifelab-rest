@@ -10,7 +10,7 @@
  */
 
  // Definie le module lifeMonitorDoctorApp et ses dépendances
- var app = angular.module('lifeMonitorDoctorApp', ['ngAnimate','ngResource','ui.router']);
+ var app = angular.module('lifeMonitorDoctorApp', ['ngAnimate','ngResource','ui.router', 'ui.select', 'ui.date']);
   app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.headers.common = 'Content-Type: application/json';
