@@ -46,7 +46,7 @@ class Prescription
     private $doctor;
 
     /**
-     * @Type ("LifeLab\RestBundle\Entity\Doctor")
+     * @Type ("LifeLab\RestBundle\Entity\MedicalFile")
      * @ORM\ManyToOne(targetEntity="MedicalFile")
      * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false)
      */
