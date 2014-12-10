@@ -77,7 +77,7 @@ class InitController extends Controller
     }       
 
     function importMedication(){
-      $myfile = fopen('/home/azureuser/CIS.txt','r');
+      $myfile = fopen('CIS.txt','r');
 
       while(($buffer = fgets($myfile)) !== false){
         $this->addMedicine($buffer);
