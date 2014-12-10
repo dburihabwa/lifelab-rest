@@ -22,7 +22,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	$scope.submit = function () {
 		$scope.prescription.medicalFile = {'id': parseInt($stateParams.id, 10)};
 		$scope.prescription.doctor = {'id': 1};
-		$scope.prescription.date = moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ssZZ');
+		$scope.prescription.date = new Date();
 				
 		$http({
 			'url': '/files/' + $stateParams.id + '/prescriptions',
@@ -32,13 +32,14 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 			console.log('Prescription saved!');
 			$scope.treatment.prescription = data;
 			$scope.treatment.medicalFile = data.medicalFile;
-			$scope.treatment.date = moment($scope.treatment.date).format('YYYY-MM-DD[T]HH:mm:ssZZ');
+			$scope.treatment.date = $scope.treatment.date;
 			$http({
 				'url': '/files/' + $stateParams.id + '/treatments',
 				'method': 'POST',
 				'data': $scope.treatment
 			}).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
 				console.log('Treatment saved!');
+				alert('Prescrition and treatment saved!');
 			}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
 				alert('Oops! Couldn\'t save the treatment');
 			});

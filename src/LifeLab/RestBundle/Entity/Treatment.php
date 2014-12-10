@@ -30,7 +30,7 @@ class Treatment
 
     /**
      * @var datetime
-     * @Type ("DateTime")
+     * @Type ("DateTime<'Y-m-d\TH:i:s.uP'>")
      *
      * @ORM\Column(name="date", type="date")
      * @Expose
