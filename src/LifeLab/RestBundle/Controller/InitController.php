@@ -37,32 +37,32 @@ class InitController extends Controller
 
       // On recherche le type de medicament
       if ($this->contains($dataToAdd['FORME'],'gel') ){ $shape = 'Gel';}
-      else if ($this->contains($dataToAdd['FORME'],'gélule') ){ $shape = 'Gélules';}
-      else if ($this->contains($dataToAdd['FORME'],'comprimé') ){$shape = 'Comprimés';}
-      else if ($this->contains($dataToAdd['FORME'],'pommade') ){ $shape = 'Pommade';}
-      else if ($this->contains($dataToAdd['FORME'],'poudre') ){$shape = 'Poudre';}
-      else if ($this->contains($dataToAdd['FORME'],'gaz') ){$shape = 'Gaz';}
-      else if ($this->contains($dataToAdd['FORME'],'plante') ){$shape = 'Plante';}
+      else if ($this->contains($dataToAdd['FORME'],'gélule') ){ $shape = 'Capsule';}
+      else if ($this->contains($dataToAdd['FORME'],'comprimé') ){$shape = 'Pills';}
+      else if ($this->contains($dataToAdd['FORME'],'pommade') ){ $shape = 'Ointment';}
+      else if ($this->contains($dataToAdd['FORME'],'poudre') ){$shape = 'Powder';}
+      else if ($this->contains($dataToAdd['FORME'],'gaz') ){$shape = 'Gas';}
+      else if ($this->contains($dataToAdd['FORME'],'plante') ){$shape = 'Plant';}
       else if ($this->contains($dataToAdd['FORME'],'solution') ){$shape = 'Solution';}
-      else if ($this->contains($dataToAdd['FORME'],'capsule') ){$shape = 'Capsule';}
-      else if ($this->contains($dataToAdd['FORME'],'crème') ){$shape = 'Crème';}
-      else if ($this->contains($dataToAdd['FORME'],'sirop') ){$shape = 'Sirop';}	
+      else if ($this->contains($dataToAdd['FORME'],'capsule') ){$shape = 'Pellet';}
+      else if ($this->contains($dataToAdd['FORME'],'crème') ){$shape = 'Creme';}
+      else if ($this->contains($dataToAdd['FORME'],'sirop') ){$shape = 'Liquid';}	
       else if ($this->contains($dataToAdd['FORME'],'suspension') ){$shape = 'Suspension';}	
       else{ return; }
 
       // On recherche la voie d'administration
-      if ($this->contains($dataToAdd['VOIE'],'orale') || $this->contains($dataToAdd['VOIE'],'buccale') ){ $howToTake = 'Orale';}
-      else if ($this->contains($dataToAdd['VOIE'],'orale') ){ $howToTake = 'Orale';}
-      else if ($this->contains($dataToAdd['VOIE'],'cutanée') ){ $howToTake = 'Cutanée';}
-      else if ($this->contains($dataToAdd['VOIE'],'intraveineuse') ){ $howToTake = 'Intraveineuse';}
-      else if ($this->contains($dataToAdd['VOIE'],'auriculaire') ){ $howToTake = 'Auriculaire';}
-      else if ($this->contains($dataToAdd['VOIE'],'intramusculaire') ){ $howToTake = 'Intramusculaire';}
-      else if ($this->contains($dataToAdd['VOIE'],'inhalée') ){ $howToTake = 'Inhalée';}
-      else if ($this->contains($dataToAdd['VOIE'],'sublinguale') ){ $howToTake = 'Sublinguale';}
-      else if ($this->contains($dataToAdd['VOIE'],'ophtalmique') ){ $howToTake = 'Ophtalmique';}
-      else if ($this->contains($dataToAdd['VOIE'],'périneurale') ){ $howToTake = 'Périneurale';}
-      else if ($this->contains($dataToAdd['VOIE'],'nasale') ){ $howToTake = 'Nasale';}
-      else if ($this->contains($dataToAdd['VOIE'],'endotrachéobronchique') ){ $howToTake = 'Endotrachéobronchique';}
+      if ($this->contains($dataToAdd['VOIE'],'orale') || $this->contains($dataToAdd['VOIE'],'buccale') ){ $howToTake = 'Oral';}
+      else if ($this->contains($dataToAdd['VOIE'],'orale') ){ $howToTake = 'Oral';}
+      else if ($this->contains($dataToAdd['VOIE'],'cutanée') ){ $howToTake = 'Dermal';}
+      else if ($this->contains($dataToAdd['VOIE'],'intraveineuse') ){ $howToTake = 'Intraveinous';}
+      else if ($this->contains($dataToAdd['VOIE'],'auriculaire') ){ $howToTake = 'Auricular';}
+      else if ($this->contains($dataToAdd['VOIE'],'intramusculaire') ){ $howToTake = 'Intramuscular';}
+      else if ($this->contains($dataToAdd['VOIE'],'inhalée') ){ $howToTake = 'Inhaled';}
+      else if ($this->contains($dataToAdd['VOIE'],'sublinguale') ){ $howToTake = 'Sublingual';}
+      else if ($this->contains($dataToAdd['VOIE'],'ophtalmique') ){ $howToTake = 'Ophtalmic';}
+      else if ($this->contains($dataToAdd['VOIE'],'périneurale') ){ $howToTake = 'Périneural';}
+      else if ($this->contains($dataToAdd['VOIE'],'nasale') ){ $howToTake = 'Nasal';}
+      else if ($this->contains($dataToAdd['VOIE'],'endotrachéobronchique') ){ $howToTake = 'Endotracheopulmonary';}
       else{return;};      
 
       $medicine = new Medicine();
