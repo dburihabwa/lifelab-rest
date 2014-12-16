@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Prescription', 'Doctor', '$http', function ($rootScope, $scope, $stateParams, $state, Prescription, Doctor, $http) {
+app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Patients', 'Prescription', 'Doctor', '$http', function ($rootScope, $scope, $stateParams, $state, Patients ,Prescription, Doctor, $http) {
 	// For nav redirections
 	$scope.$state = $state;
 	$scope.$stateParams = $stateParams;
@@ -15,7 +15,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 			$scope.doctors = doctors;
 			console.log(JSON.stringify(doctors, null, '\t'));
 		}, function (error) {
-			alert('A problem occcured when loading the doctors :\n' + error.message);
+			alert('A problem occcured when loading the list  doctors :\n' + error.message);
 		});
 	};
 
@@ -30,30 +30,35 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	};
 
 	$scope.submit = function () {
-		$scope.prescription.medicalFile = {'id': parseInt($stateParams.id, 10)};
 		$scope.prescription.date = new Date();
 
-		$('#prescriptionDoctorsModal').modal('hide');
-
-		$http({
-			'url': '/files/' + $stateParams.id + '/prescriptions',
-			'method': 'POST',
-			'data': $scope.prescription
-		}).success(function (data, status, headers, config) {
-			$scope.treatment.prescription = data;
-			$scope.treatment.medicalFile = data.medicalFile;
+		Patients.getPatient($stateParams.id).then(function (patient) {
+			var medicalFile = patient.medical_file;
+			$scope.prescription.medicalFile = medicalFile;
 			$http({
-				'url': '/files/' + $stateParams.id + '/treatments',
+				'url': '/files/' + medicalFile.id + '/prescriptions',
 				'method': 'POST',
-				'data': $scope.treatment
-			}).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
-				alert('Prescrition and treatment saved!');
-			}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
-				alert('Oops! Couldn\'t save the treatment');
+				'data': $scope.prescription
+			}).success(function (data, status, headers, config) {
+				$scope.treatment.prescription = data;
+				$scope.treatment.medicalFile = data.medicalFile;
+				$http({
+					'url': '/files/' + medicalFile.id + '/treatments',
+					'method': 'POST',
+					'data': $scope.treatment
+				}).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
+					alert('Prescrition and treatment saved!');
+				}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
+					alert('Oops! Couldn\'t save the treatment');
+				});
+			}).error(function (data, status, headers, config) {
+				alert('Oops! Couldn\'t save the prescription');
 			});
-		}).error(function (data, status, headers, config) {
-			alert('Oops! Couldn\'t save the prescription');
+		}, function (error) {
+			alert(error);
 		});
+
+		$('#prescriptionDoctorsModal').modal('hide');
 	};
 
 
