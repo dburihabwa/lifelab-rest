@@ -158,4 +158,40 @@ class MedicalFileController extends AbstractController {
         $view = $this->view($prescription, $statusCode);
         return $this->handleView($view);
     }
+
+    public function postAllergiesAction($id, Request $request) {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
+        $medicalFile = $repository->find($id);
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('medical file not found');
+        }
+        $json = $request->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $allergy = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Allergy', 'json');
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Allergy');
+        $actualAllergy = $repository->find($allergy->getId());
+        if ($actualAllergy == NULL) {
+            throw new NotFoundHttpException('allergy not found');
+        }
+
+        $alreadyExists = false;
+        $statusCode = 304;
+        foreach ($medicalFile->getAllergies() as $a) {
+            if ($a->getId() === $actualAllergy->getId()) {
+                $alreadyExists = true;
+                break;
+            }
+        }
+
+        if (!$alreadyExists) {
+            $medicalFile->addAllergy($actualAllergy);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($medicalFile);
+            $em->flush();
+            $statusCode = 200;
+        }
+
+        $view = $this->view($medicalFile, $statusCode);
+        return $this->handleView($view);
+    }
 }
