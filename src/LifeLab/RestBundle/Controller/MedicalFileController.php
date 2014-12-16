@@ -32,6 +32,7 @@ class MedicalFileController extends AbstractController {
         return 'LifeLab\RestBundle\Entity\MedicalFile';
     }
 
+
     public function getTreatmentsAction($id) {
         $medicalFile = $this->getEntity($id);
         if ($medicalFile == NULL) {
@@ -68,6 +69,13 @@ class MedicalFileController extends AbstractController {
         if ($treatment->getDate() == NULL) {
             $statusCode = 400;
             $view = $this->view("Date field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+        if ($today > $treatment->getDate()) {
+            $statusCode = 400;
+            $view = $this->view("Date field must be set to today or any time later in the future!", $statusCode);
             return $this->handleView($view);
         }
         if ($treatment->getFrequency() == NULL) {
@@ -129,6 +137,13 @@ class MedicalFileController extends AbstractController {
         if ($prescription->getDate() == NULL) {
             $statusCode = 400;
             $view = $this->view("Date field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+        if ($today > $prescription->getDate()) {
+            $statusCode = 400;
+            $view = $this->view("Date field must be set to today or any time later in the future!", $statusCode);
             return $this->handleView($view);
         }
         //Retrieve actual doctor

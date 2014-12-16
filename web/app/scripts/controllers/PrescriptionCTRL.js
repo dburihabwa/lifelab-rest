@@ -29,16 +29,13 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 			'method': 'POST',
 			'data': $scope.prescription
 		}).success(function (data, status, headers, config) {
-			console.log('Prescription saved!');
 			$scope.treatment.prescription = data;
 			$scope.treatment.medicalFile = data.medicalFile;
-			$scope.treatment.date = $scope.treatment.date;
 			$http({
 				'url': '/files/' + $stateParams.id + '/treatments',
 				'method': 'POST',
 				'data': $scope.treatment
 			}).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
-				console.log('Treatment saved!');
 				alert('Prescrition and treatment saved!');
 			}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
 				alert('Oops! Couldn\'t save the treatment');
