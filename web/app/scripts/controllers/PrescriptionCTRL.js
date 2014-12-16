@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Prescription', '$http', function ($rootScope, $scope, $stateParams, $state, Prescription, $http){
+app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Prescription', 'Doctor', '$http', function ($rootScope, $scope, $stateParams, $state, Prescription, Doctor, $http) {
 	// For nav redirections
 	$scope.$state = $state;
 	$scope.$stateParams = $stateParams;
@@ -8,6 +8,16 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	$scope.prescription = {};
 	$scope.treatment = {};
 	$scope.medicines = [];
+	$scope.doctors = [];
+
+	$scope.listDoctors = function () {
+		Doctor.getAll().then(function (doctors) {
+			$scope.doctors = doctors;
+			console.log(JSON.stringify(doctors, null, '\t'));
+		}, function (error) {
+			alert('A problem occcured when loading the doctors :\n' + error.message);
+		});
+	};
 
 	$scope.searchMedication = function (keyword) {
 		if (keyword) {
@@ -21,9 +31,10 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 
 	$scope.submit = function () {
 		$scope.prescription.medicalFile = {'id': parseInt($stateParams.id, 10)};
-		$scope.prescription.doctor = {'id': 1};
 		$scope.prescription.date = new Date();
-				
+
+		$('#prescriptionDoctorsModal').modal('hide');
+
 		$http({
 			'url': '/files/' + $stateParams.id + '/prescriptions',
 			'method': 'POST',
@@ -44,4 +55,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 			alert('Oops! Couldn\'t save the prescription');
 		});
 	};
+
+
+	$scope.listDoctors();
 }]);

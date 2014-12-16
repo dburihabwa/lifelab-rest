@@ -52,3 +52,19 @@ app.factory('Prescription', ['$resource', function ($resource) {
 
 	return Factory;
 }]);
+
+app.factory('Doctor', ['$resource', function ($resource) {
+	var Doctors = $resource('/doctors/all');
+	var Doctor = $resource('/doctors/:id', {id: '@id'});
+
+	var Factory = {
+		getAll: function () {
+			return Doctors.query().$promise;
+		},
+		get: function (id) {
+			return Doctor.get({'id': id}).$promise;
+		}
+	};
+
+	return Factory;
+}]);
