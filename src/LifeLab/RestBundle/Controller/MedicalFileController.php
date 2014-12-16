@@ -175,7 +175,6 @@ class MedicalFileController extends AbstractController {
         }
 
         $alreadyExists = false;
-        $statusCode = 304;
         foreach ($medicalFile->getAllergies() as $a) {
             if ($a->getId() === $actualAllergy->getId()) {
                 $alreadyExists = true;
@@ -188,9 +187,44 @@ class MedicalFileController extends AbstractController {
             $em = $this->getDoctrine()->getManager();
             $em->persist($medicalFile);
             $em->flush();
-            $statusCode = 200;
+        }
+        $statusCode = 200;
+
+        $view = $this->view($medicalFile, $statusCode);
+        return $this->handleView($view);
+    }
+
+    public function postIllnessesAction($id, Request $request) {
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
+        $medicalFile = $repository->find($id);
+        if ($medicalFile == NULL) {
+            throw new NotFoundHttpException('medical file not found');
+        }
+        $json = $request->getContent();
+        $serializer = SerializerBuilder::create()->build();
+        $illness = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Illness', 'json');
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Illness');
+        $actualIllness = $repository->find($illness->getId());
+        if ($actualIllness == NULL) {
+            throw new NotFoundHttpException('illness not found');
         }
 
+        $alreadyExists = false;
+        foreach ($medicalFile->getIllnesses() as $i) {
+            if ($i->getId() === $actualIllness->getId()) {
+                $alreadyExists = true;
+                break;
+            }
+        }
+
+        if (!$alreadyExists) {
+            $medicalFile->addIllness($actualIllness);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($medicalFile);
+            $em->flush();
+        }
+
+        $statusCode = 200;
         $view = $this->view($medicalFile, $statusCode);
         return $this->handleView($view);
     }
