@@ -54,6 +54,8 @@ class PatientController extends AbstractController {
             throw new NotFoundHttpException('Patient not found');
         }
         $medicalFile = $patient->getMedicalFile();
+        $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
+        $medicalFile = $repository->find($medicalFile->getId());
         $statusCode = 200;
         $view = $this->view($medicalFile, $statusCode);
         return $this->handleView($view);
