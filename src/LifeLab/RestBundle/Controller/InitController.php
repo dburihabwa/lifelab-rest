@@ -1,5 +1,8 @@
 <?php
 
+/**
+  * To work, the CIS.txt fild have to be in the web folder
+  */
 namespace LifeLab\RestBundle\Controller;
 
 use LifeLab\RestBundle\Entity\Allergy;
@@ -90,61 +93,61 @@ class InitController extends Controller
     {
         $this->em = $this->getDoctrine()->getManager();
         
-        // $allergy = new Allergy();
-        // $allergy->setName('Noix');
-        // $em->persist($allergy);
-        // $em->flush();
+        $allergy = new Allergy();
+        $allergy->setName('Noix');
+        $em->persist($allergy);
+        $em->flush();
         
-        // $illness = new Illness();
-        // $illness->setName('Grippe');
-        // $em->persist($illness);
-        // $em->flush();
+        $illness = new Illness();
+        $illness->setName('Grippe');
+        $em->persist($illness);
+        $em->flush();
         
-        // $medicine = new Medicine();
-        // $medicine->setName('doliprane');
-        // $medicine->setDosage('500 mg');
-        // $medicine->setDangerous(1);
-        // $em->persist($medicine);
-        // $em->flush();
+        $medicine = new Medicine();
+        $medicine->setName('doliprane');
+        $medicine->setDosage('500 mg');
+        $medicine->setDangerous(1);
+        $em->persist($medicine);
+        $em->flush();
         
-        // $medicalFile = new MedicalFile();
+        $medicalFile = new MedicalFile();
         
-        // $allergies = $medicalFile->getAllergies();
-        // $medicalFile->addAllergy($allergy);
+        $allergies = $medicalFile->getAllergies();
+        $medicalFile->addAllergy($allergy);
         
-        // $illnesses = $medicalFile->getIllnesses();
-        // $medicalFile->addIllness($illness);
+        $illnesses = $medicalFile->getIllnesses();
+        $medicalFile->addIllness($illness);
         
-        // $em->persist($medicalFile);
-        // $em->flush();
+        $em->persist($medicalFile);
+        $em->flush();
         
         $patient = new Patient();
         $patient->setName('Terry Gilliam');
-        // $patient->setMedicalFile($medicalFile);
-        // $em->persist($patient);
-        // $em->flush();
+        $patient->setMedicalFile($medicalFile);
+        $em->persist($patient);
+        $em->flush();
         
-        // $doctor = new Doctor();
-        // $doctor->setName('Dr Jekyll');
-        // $em->persist($doctor);
-        // $em->flush();
+        $doctor = new Doctor();
+        $doctor->setName('Dr Jekyll');
+        $em->persist($doctor);
+        $em->flush();
         
-        // $prescription = new Prescription();
-        // $prescription->setDate(new \DateTime());
-        // $prescription->setMedicalFile($medicalFile);
-        // $prescription->setDoctor($doctor);
-        // $em->persist($prescription);
-        // $em->flush();
+        $prescription = new Prescription();
+        $prescription->setDate(new \DateTime());
+        $prescription->setMedicalFile($medicalFile);
+        $prescription->setDoctor($doctor);
+        $em->persist($prescription);
+        $em->flush();
 
-        // $treatment = new Treatment();
-        // $treatment->setMedicine($medicine);
-        // $treatment->setDate(new \DateTime());
-        // $treatment->setUnits(12);
-        // $treatment->setFrequency('2 fois par jour');
-        // $treatment->setMedicalFile($medicalFile);
-        // $treatment->setPrescription($prescription);
-        // $em->persist($treatment);
-        // $em->flush();
+        $treatment = new Treatment();
+        $treatment->setMedicine($medicine);
+        $treatment->setDate(new \DateTime());
+        $treatment->setUnits(12);
+        $treatment->setFrequency('2 fois par jour');
+        $treatment->setMedicalFile($medicalFile);
+        $treatment->setPrescription($prescription);
+        $em->persist($treatment);
+        $em->flush();
         
 	// import des datas
 	$this->importMedication();
