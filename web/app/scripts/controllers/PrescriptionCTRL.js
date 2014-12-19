@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Patients', 'Prescription', 'Doctor', '$http', function ($rootScope, $scope, $stateParams, $state, Patients ,Prescription, Doctor, $http) {
+app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Patients', 'Medicines', 'Doctors', 'MedicalRecords', function ($rootScope, $scope, $stateParams, $state, Patients, Medicines, Doctors, MedicalRecords) {
 	// For nav redirections
 	$scope.$state = $state;
 	$scope.$stateParams = $stateParams;
@@ -11,9 +11,8 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	$scope.doctors = [];
 
 	$scope.listDoctors = function () {
-		Doctor.getAll().then(function (doctors) {
+		Doctors.getAll().then(function (doctors) {
 			$scope.doctors = doctors;
-			console.log(JSON.stringify(doctors, null, '\t'));
 		}, function (error) {
 			alert('A problem occcured when loading the list  doctors :\n' + error.message);
 		});
@@ -21,7 +20,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 
 	$scope.searchMedication = function (keyword) {
 		if (keyword) {
-			Prescription.searchMedication(keyword).then(function (medicines) {
+			Medicines.search(keyword).then(function (medicines) {
 				$scope.medicines = medicines;
 			}, function (error) {
 				console.error(error);
@@ -31,22 +30,13 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 
 	$scope.submit = function () {
 		$scope.prescription.date = new Date();
-
 		Patients.getPatient($stateParams.id).then(function (patient) {
 			var medicalFile = patient.medical_file;
 			$scope.prescription.medicalFile = medicalFile;
-			$http({
-				'url': '/files/' + medicalFile.id + '/prescriptions',
-				'method': 'POST',
-				'data': $scope.prescription
-			}).success(function (data, status, headers, config) {
+			MedicalRecords.addPrescription(medicalFile.id, $scope.prescription).success(function (data, status, headers, config) {
 				$scope.treatment.prescription = data;
 				$scope.treatment.medicalFile = data.medicalFile;
-				$http({
-					'url': '/files/' + medicalFile.id + '/treatments',
-					'method': 'POST',
-					'data': $scope.treatment
-				}).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
+				MedicalRecords.addTreatment(medicalFile.id, $scope.treatment).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
 					alert('Prescrition and treatment saved!');
 				}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
 					alert('Oops! Couldn\'t save the treatment');
@@ -57,7 +47,6 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 		}, function (error) {
 			alert(error);
 		});
-
 		$('#prescriptionDoctorsModal').modal('hide');
 	};
 

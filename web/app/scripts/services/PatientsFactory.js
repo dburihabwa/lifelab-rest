@@ -8,12 +8,8 @@
  * Factory of Patients informations
  */
 app.factory('Patients', ['$resource', function($resource){
-
-	//var Patients = $resource('http://demo9892644.mockable.io/patients');
 	var Patients = $resource('/patients/all');
-	//var Patient = $resource('http://demo9892644.mockable.io/patients/:id', {id:'@id'});
 	var Patient = $resource('/patients/:id', {id:'@id'});
-	//var File = $resource('http://demo9892644.mockable.io/patients/:id/file', {id:'@id'});
 	var File = $resource('/patients/:id/file', {id:'@id'});
 	var MedicalRecord = $resource('/files/:id/prescriptions', {id: '@id'});
 
@@ -41,19 +37,7 @@ app.factory('Patients', ['$resource', function($resource){
 	return Factory;
 }]);
 
-app.factory('Prescription', ['$resource', function ($resource) {
-	var MedicinesSearch = $resource('/medicines/search/:keyword', {keyword:'@keyword'});
-
-	var Factory = {
-		searchMedication: function (keyword) {
-			return MedicinesSearch.query({keyword: keyword}).$promise;
-		}
-	};
-
-	return Factory;
-}]);
-
-app.factory('Doctor', ['$resource', function ($resource) {
+app.factory('Doctors', ['$resource', function ($resource) {
 	var Doctors = $resource('/doctors/all');
 	var Doctor = $resource('/doctors/:id', {id: '@id'});
 
@@ -66,5 +50,39 @@ app.factory('Doctor', ['$resource', function ($resource) {
 		}
 	};
 
+	return Factory;
+}]);
+
+app.factory('Medicines', ['$resource', function ($resource) {
+	var Search = $resource('/medicines/search/:keyword', {'keyword': 'keyword'});
+	var Factory = {
+		search: function (keyword) {
+			return Search.query({'keyword': keyword}).$promise;
+		}
+	};
+	return Factory;
+}]);
+
+app.factory('MedicalRecords', ['$resource', '$http', function ($resource, $http) {
+	var medicalRecord = $resource('/files/:id', {'id': '@id'});
+	var Factory = {
+		addPrescription: function (medicalRecordId, prescription) {
+			return $http({
+				'url': '/files/' + medicalRecordId + '/prescriptions',
+				'method': 'POST',
+				'data': prescription
+			});
+		},
+		addTreatment: function (medicalRecordId, treatment) {
+			return $http({
+					'url': '/files/' + medicalRecordId + '/treatments',
+					'method': 'POST',
+					'data': treatment
+			});
+		},
+		get: function (id) {
+			return medicalRecord.get(id).$promise;
+		}
+	};
 	return Factory;
 }]);
