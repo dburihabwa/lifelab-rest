@@ -25,22 +25,32 @@ class MedicineController extends AbstractController {
 
     /**
      * Search for medicines by name.
-     * A limit might be specified using a query string parameter (ie: ?limit=<limit>)
+     * A limit might be specified using a query string parameter (ie: ?limit=<limit>).
+     * A starting point in the results may be specified using a query string parameter for pagination purposes (ie: ?from=<starting point>).
      * @Get("/medicines/search/{keyword}")
      */
     public function searchAction(Request $request, $keyword) {
 	    $em = $this->getDoctrine()->getManager();
 	    $limitParameter = $request->query->get('limit');
 	    $limit = 25;
-	    if ($limit) {
+	    if ($limitParameter) {
 		    $interpretedValue = intval($limitParameter, 10);
 		    if ($interpretedValue > 0) {
 			    $limit = $interpretedValue;
 		    }
 	    }
+	    $fromParameter = $request->query->get('from');
+	    $from = 0;
+	    if ($fromParameter) {
+	    	$interpretedValue = intval($fromParameter, 10);
+	    	if ($interpretedValue > 0) {
+	    		$from = $interpretedValue;
+	    	}
+	    }
 	    $query = $em->createQuery('SELECT m FROM LifeLabRestBundle:Medicine m WHERE m.name LIKE :keyword');
-	    $query->setParameter('keyword', '%' . $keyword . '%');
-	    $query->setMaxResults($limit);
+	    $query->setParameters(array('keyword' => '%' . $keyword . '%'))
+	    	->setFirstResult($from)
+	    	->setMaxResults($limit);
 	    $medicines = $query->getResult();
 	    $statusCode = 200;
 	    $view = $this->view($medicines, $statusCode);
