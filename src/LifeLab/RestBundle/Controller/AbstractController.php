@@ -17,16 +17,79 @@ abstract class AbstractController extends FOSRestController {
 
     abstract protected function getEntityName();
 
-    public function cgetAction() {
-        $repository = $this->getRepository();
-        $entities = $repository->findAll();
-        $statusCode = 200;
-        $view = $this->view($entities, $statusCode);
-        return $this->handleView($view);   
+    /**
+     * Return the short version of the entity's name.
+     * @return string Entity's name short version
+     */
+    protected function getEntityShortName() {
+        $entityName = $this->getEntityName();
+        $tokens = explode('\\', $entityName);
+        $shortName = $tokens[0] . $tokens[1] . ':' . $tokens[count($tokens) - 1];
+        return $shortName;
     }
 
-    public function getAllAction() {
-        return $this->cgetAction();
+    /**
+     * Read a parameter from the request and parse it as an integer.
+     * If the parsing fails, the default value passed as a parameter is returned.
+     * If no default value is given, the default value is set to 0.
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @param string $name Name of the parameter
+     * @param int $defaultValue The value that should be returned if the parameter cannot be found or parsed
+     * @return int Parameter value
+     */
+    protected function getParameter(Request $request, $name, $defaultValue = 0) {
+        $parameter = $request->query->get($name);
+        $param = $defaultValue;
+        if ($parameter) {
+            $interpretedValue = intval($parameter, 10);
+            if ($interpretedValue > 0) {
+                $param = $interpretedValue;
+            }
+        }
+        return $param;
+    }
+
+    /**
+     * Returns the from parameter from a request.
+     * If the parameter cannot be found or parsed, the default value is 0.
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return int From parameter value
+     */
+    protected function getFromParameter(Request $request) {
+        return $this->getParameter($request, 'from', 0);
+    }
+    
+    /**
+     * Returns the limit parameter from a request.
+     * If the parameter cannot be found or parsed, the default value is 0.
+     * @param Symfony\Component\HttpFoundation\Request $request Request object
+     * @return int Limit parameter value
+     */
+    protected function getLimitParameter(Request $request) {
+        return $this->getParameter($request, 'limit', 0);
+    }
+
+    protected function getAllEntities(Request $request) {
+        $from = $this->getFromParameter($request);
+        $limit = $this->getLimitParameter($request);
+        $entityName = $this->getEntityShortName();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT e FROM ' . $entityName . ' e');
+        if ($from != 0) {
+            $query->setFirstResult($from);
+        }
+        if ($limit != 0) {
+            $query->setMaxResults($limit);
+        }
+        $entities = $query->getResult();
+        return $entities;
+    }
+
+    public function getAllAction(Request $request) {
+        $entities = $this->getAllEntities($request);
+        $statusCode = 200;
+        $view = $this->view($entities, $statusCode);
+        return $this->handleView($view);
     }
 
 

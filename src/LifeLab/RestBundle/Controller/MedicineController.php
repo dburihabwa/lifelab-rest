@@ -32,21 +32,11 @@ class MedicineController extends AbstractController {
     public function searchAction(Request $request, $keyword) {
 	    $em = $this->getDoctrine()->getManager();
 	    $limitParameter = $request->query->get('limit');
-	    $limit = 25;
-	    if ($limitParameter) {
-		    $interpretedValue = intval($limitParameter, 10);
-		    if ($interpretedValue > 0) {
-			    $limit = $interpretedValue;
-		    }
+	    $limit = $this->getLimitParameter($request);
+	    if ($limit == 0) {
+	    	$limit = 25;
 	    }
-	    $fromParameter = $request->query->get('from');
-	    $from = 0;
-	    if ($fromParameter) {
-	    	$interpretedValue = intval($fromParameter, 10);
-	    	if ($interpretedValue > 0) {
-	    		$from = $interpretedValue;
-	    	}
-	    }
+	    $from = $this->getFromParameter($request);
 	    $query = $em->createQuery('SELECT m FROM LifeLabRestBundle:Medicine m WHERE m.name LIKE :keyword');
 	    $query->setParameters(array('keyword' => '%' . $keyword . '%'))
 	    	->setFirstResult($from)

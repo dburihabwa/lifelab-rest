@@ -33,15 +33,12 @@ class PatientController extends AbstractController {
     /**
      * Returns all the patients in the database stripped of their medical file.
      */
-    public function cGetAction() {
-        $repository = $this->getRepository();
-        $patients = $repository->findAll();
+    public function getAllEntities(Request $request) {
+        $patients = parent::getAllEntities($request);
         foreach ($patients as $patient) {
             $patient->setMedicalFile(NULL);
         }
-        $statusCode = 200;
-        $view = $this->view($patients, $statusCode);
-        return $this->handleView($view);
+        return $patients;
     }
 
     /**
