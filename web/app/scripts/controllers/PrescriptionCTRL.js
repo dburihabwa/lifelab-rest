@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Patients', 'Medicines', 'Doctors', 'MedicalRecords', function ($rootScope, $scope, $stateParams, $state, Patients, Medicines, Doctors, MedicalRecords) {
+app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$state', 'Patients', 'Medicines', 'Doctors', 'MedicalRecords', '$location', function ($rootScope, $scope, $stateParams, $state, Patients, Medicines, Doctors, MedicalRecords, $location) {
 	// For nav redirections
 	$scope.$state = $state;
 	$scope.$stateParams = $stateParams;
@@ -37,7 +37,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 				$scope.treatment.prescription = data;
 				$scope.treatment.medicalFile = data.medicalFile;
 				MedicalRecords.addTreatment(medicalFile.id, $scope.treatment).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
-					alert('Prescrition and treatment saved!');
+					$location.path('/patients/' + $stateParams.id + '/medicalRecord');
 				}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
 					alert('Oops! Couldn\'t save the treatment');
 				});
