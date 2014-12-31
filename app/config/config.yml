@@ -89,3 +89,8 @@ services:
         class: LifeLab\RestBundle\EventListener\LifeLabResponseListener
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: LifeLab\RestBundle\Entity\User

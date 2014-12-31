@@ -6,3 +6,6 @@ init:
 rest_routing:
     type:       rest
     resource:   "@LifeLabRestBundle/Resources/config/routing/rest_routing.yml"
+
+fos_user:
+    resource:   "@FOSUserBundle/Resources/config/routing/all.xml"

@@ -20,7 +20,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/serializer": "2.5.5",
         "friendsofsymfony/rest-bundle": "1.3.*",
-        "jms/serializer-bundle": "0.13.*"
+        "jms/serializer-bundle": "0.13.*",
+        "friendsofsymfony/user-bundle": "2.0.*@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
