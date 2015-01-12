@@ -14,6 +14,8 @@ use LifeLab\RestBundle\Entity\Patient;
 use LifeLab\RestBundle\Entity\Prescription;
 use LifeLab\RestBundle\Entity\Treatment;
 
+use JMS\Serializer\SerializerBuilder;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -95,20 +97,21 @@ class InitController extends Controller
         
         $allergy = new Allergy();
         $allergy->setName('Noix');
-        $em->persist($allergy);
-        $em->flush();
+        $this->em->persist($allergy);
+        $this->em->flush();
         
         $illness = new Illness();
         $illness->setName('Grippe');
-        $em->persist($illness);
-        $em->flush();
+        $this->em->persist($illness);
+        $this->em->flush();
         
         $medicine = new Medicine();
         $medicine->setName('doliprane');
-        $medicine->setDosage('500 mg');
-        $medicine->setDangerous(1);
-        $em->persist($medicine);
-        $em->flush();
+        $medicine->setShape('Pills');
+        $medicine->setHowToTake('Oral');
+        $medicine->setDangerLevel(1);
+        $this->em->persist($medicine);
+        $this->em->flush();
         
         $medicalFile = new MedicalFile();
         
@@ -118,26 +121,26 @@ class InitController extends Controller
         $illnesses = $medicalFile->getIllnesses();
         $medicalFile->addIllness($illness);
         
-        $em->persist($medicalFile);
-        $em->flush();
+        $this->em->persist($medicalFile);
+        $this->em->flush();
         
         $patient = new Patient();
         $patient->setName('Terry Gilliam');
         $patient->setMedicalFile($medicalFile);
-        $em->persist($patient);
-        $em->flush();
+        $this->em->persist($patient);
+        $this->em->flush();
         
         $doctor = new Doctor();
         $doctor->setName('Dr Jekyll');
-        $em->persist($doctor);
-        $em->flush();
+        $this->em->persist($doctor);
+        $this->em->flush();
         
         $prescription = new Prescription();
         $prescription->setDate(new \DateTime());
         $prescription->setMedicalFile($medicalFile);
         $prescription->setDoctor($doctor);
-        $em->persist($prescription);
-        $em->flush();
+        $this->em->persist($prescription);
+        $this->em->flush();
 
         $treatment = new Treatment();
         $treatment->setMedicine($medicine);
@@ -146,13 +149,14 @@ class InitController extends Controller
         $treatment->setFrequency('2 fois par jour');
         $treatment->setMedicalFile($medicalFile);
         $treatment->setPrescription($prescription);
-        $em->persist($treatment);
-        $em->flush();
+        $this->em->persist($treatment);
+        $this->em->flush();
         
-	// import des datas
-	$this->importMedication();
+        // import medication data
+        $this->importMedication();
         
-        $response = new Response(json_encode(array('id' => $patient->getId(), 'name' => $patient->getName())));
+        $serializer = SerializerBuilder::create()->build();
+        $response = new Response($serializer->serialize($patient, 'json')); 
         $response->headers->set('Content-type', 'application/json');
         return $response;
     }
