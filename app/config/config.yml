@@ -89,3 +89,8 @@ services:
         class: LifeLab\RestBundle\EventListener\LifeLabResponseListener
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+jms_serializer:
+    handlers:
+        datetime:
+            default_format: "c"

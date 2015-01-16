@@ -29,10 +29,11 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	};
 
 	$scope.submit = function () {
-		$scope.prescription.date = new Date();
+		$scope.prescription.date = (new Date()).toISOString().replace(/\.\d{3}/, '');
 		Patients.getPatient($stateParams.id).then(function (patient) {
 			var medicalFile = patient.medical_file;
 			$scope.prescription.medicalFile = medicalFile;
+			$scope.treatment.date = $scope.treatment.date.toISOString().replace(/\.\d{3}/, '');
 			MedicalRecords.addPrescription(medicalFile.id, $scope.prescription).success(function (data, status, headers, config) {
 				$scope.treatment.prescription = data;
 				$scope.treatment.medicalFile = data.medicalFile;
