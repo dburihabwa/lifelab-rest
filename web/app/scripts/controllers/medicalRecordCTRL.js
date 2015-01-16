@@ -30,17 +30,17 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 			function(){
 				// Build medical record
 
-				medicalRecord.allergies.forEach(function (allergie) {
+				medicalRecord.allergies.forEach(function (allergy) {
 					$scope.medicalRecordContents.push({
-		                type: 'allergie',
-		                name: allergie.name,
+		                type: 'allergy',
+		                name: allergy.name,
 		            });
 				});
-				medicalRecord.illnesses.forEach(function (illnesse) {
+				medicalRecord.illnesses.forEach(function (illness) {
 					$scope.medicalRecordContents.push({
-		                type: 'illnesse',
-		                name: illnesse.name,
-		                date: illnesse.date
+		                type: 'illness',
+		                name: illness.name,
+		                date: illness.date
 		            });
 				});
 

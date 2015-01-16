@@ -7,7 +7,7 @@
 	<ul class="list-group">
     <li ng-repeat="item in medicalRecordContents | orderBy:predicate:reverse | offset: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage" 
 			class="list-group-item" 
-			ng-class=" { 'list-group-item-danger' : item.type == 'allergie', 'list-group-item-warning' : item.type == 'illnesse', 'list-group-item-success' : item.type == 'prescription' }">
+			ng-class=" { 'list-group-item-danger' : item.type == 'allergy', 'list-group-item-warning' : item.type == 'illness', 'list-group-item-success' : item.type == 'prescription' }">
         <div>
 
           <p> <span class="itemType"> {{item.type}} </span> : <span> {{item.name}} </span> </p>
