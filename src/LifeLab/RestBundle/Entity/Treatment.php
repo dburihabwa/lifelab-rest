@@ -38,22 +38,21 @@ class Treatment
     private $date;
 
     /**
-     * @var string
-     * @Type ("string")
+     * @var integer
+     * @Type ("integer")
      *
-     * @ORM\Column(name="frequency", type="string")
+     * @ORM\Column(name="frequency", type="integer")
      * @Expose
      */
     private $frequency;
 
     /**
-     * @var integer
-     * @Type ("integer")
-     *
-     * @ORM\Column(name="units", type="integer")
+     * @var float
+     * @Type ("float")
+     * @ORM\Column(name="quantity", type="float")
      * @Expose
      */
-    private $units;
+    private $quantity;
 
     /**
      * @Type ("LifeLab\RestBundle\Entity\Medicine")
@@ -70,6 +69,14 @@ class Treatment
      * @Expose
      */
     private $prescription;
+
+    /**
+     * @var integer
+     * @Type("integer")
+     * @ORM\Column(name="duration", type = "integer")
+     * @Expose
+     */
+    private $duration;
     
     /**
      * @Type ("LifeLab\RestBundle\Entity\MedicalFile")
@@ -77,7 +84,6 @@ class Treatment
      * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false)
      */
     private $medicalFile;
-
 
     /**
      * Get id
@@ -115,7 +121,7 @@ class Treatment
     /**
      * Set frequency
      *
-     * @param string $frequency
+     * @param integer $frequency
      * @return Treatment
      */
     public function setFrequency($frequency)
@@ -128,7 +134,7 @@ class Treatment
     /**
      * Get frequency
      *
-     * @return string 
+     * @return integer 
      */
     public function getFrequency()
     {
@@ -136,26 +142,49 @@ class Treatment
     }
 
     /**
-     * Set units
+     * Set quantity
      *
-     * @param integer $units
+     * @param float $quantity
      * @return Treatment
      */
-    public function setUnits($units)
+    public function setQuantity($quantity)
     {
-        $this->units = $units;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
     /**
-     * Get units
+     * Get quantity
+     *
+     * @return float 
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param integer $duration
+     * @return Treatment
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration
      *
      * @return integer 
      */
-    public function getUnits()
+    public function getDuration()
     {
-        return $this->units;
+        return $this->duration;
     }
 
     /**
@@ -164,7 +193,7 @@ class Treatment
      * @param \LifeLab\RestBundle\Entity\Medicine $medicine
      * @return Treatment
      */
-    public function setMedicine(\LifeLab\RestBundle\Entity\Medicine $medicine = null)
+    public function setMedicine(\LifeLab\RestBundle\Entity\Medicine $medicine)
     {
         $this->medicine = $medicine;
 

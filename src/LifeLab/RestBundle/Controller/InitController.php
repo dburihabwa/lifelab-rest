@@ -106,7 +106,7 @@ class InitController extends Controller
         $this->em->flush();
         
         $medicine = new Medicine();
-        $medicine->setName('doliprane');
+        $medicine->setName('bogus');
         $medicine->setShape('Pills');
         $medicine->setHowToTake('Oral');
         $medicine->setDangerLevel(1);
@@ -143,12 +143,14 @@ class InitController extends Controller
         $this->em->flush();
 
         $treatment = new Treatment();
-        $treatment->setMedicine($medicine);
         $treatment->setDate(new \DateTime());
-        $treatment->setUnits(12);
-        $treatment->setFrequency('2 fois par jour');
+        $treatment->setFrequency(12);
+        $qty = 3.0;
+        $treatment->setQuantity($qty);
+        $treatment->setMedicine($medicine);
         $treatment->setMedicalFile($medicalFile);
         $treatment->setPrescription($prescription);
+        $treatment->setDuration(10);
         $this->em->persist($treatment);
         $this->em->flush();
         
