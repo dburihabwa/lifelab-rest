@@ -159,4 +159,27 @@ class Medicine
     {
         return $this->dangerLevel;
     }
+
+    /**
+     * Set application
+     *
+     * @param string $application
+     * @return Medicine
+     */
+    public function setApplication($application)
+    {
+        $this->application = $application;
+
+        return $this;
+    }
+
+    /**
+     * Get application
+     *
+     * @return string 
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
 }

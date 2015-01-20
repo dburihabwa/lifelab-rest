@@ -57,6 +57,20 @@ class MedicalFileController extends AbstractController {
         return $this->handleView($view);
     }
     
+    /**
+     * Adds a treatment to a medical file.
+     * The controller checks that:
+     * <ul>
+     *  <li>The date is not set to earlier than today</li>
+     *  <li>The quantity, duration and frequency are above 0</li>
+     *  <li>The medicine that should be taken exists in the database</li>
+     *  <li>The prescription (if present) exists in the database</li>
+     * </ul>
+     * If one of the condition in this list is not satisfied, the controller returns a 400 repsonse with a message.
+     * @param integer  $idI d of the medical file
+     * @param Symfony\Component\HttpFoundation\Request $request HTTP request containing all the parameters
+     * @return Symfony\Component\HttpFoundation\Response A reponse with the persisted treatment
+     */
     public function postTreatmentsAction($id, Request $request) {
         $repository = $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:MedicalFile');
         $medicalFile = $repository->find($id);
@@ -66,6 +80,7 @@ class MedicalFileController extends AbstractController {
         $json = $request->getContent();
         $serializer = SerializerBuilder::create()->build();
         $treatment = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Treatment', 'json');
+        $treatment->setMedicalFile($medicalFile);
         if ($treatment->getDate() == NULL) {
             $statusCode = 400;
             $view = $this->view("Date field must be defined!", $statusCode);
@@ -78,12 +93,39 @@ class MedicalFileController extends AbstractController {
             $view = $this->view("Date field must be set to today or any time later in the future!", $statusCode);
             return $this->handleView($view);
         }
-        if ($treatment->getFrequency() == NULL) {
+        $frequency = $treatment->getFrequency();
+        if ($frequency == NULL) {
             $statusCode = 400;
             $view = $this->view("Frequency field must be defined!", $statusCode);
             return $this->handleView($view);
         }
-        $treatment->setMedicalFile($medicalFile);
+        if ($frequency < 0) {
+            $statusCode = 400;
+            $view = $this->view("Frequency field must a positive value!", $statusCode);
+            return $this->handleView($view);
+        }
+        $qty = $treatment->getQuantity();
+        if ($qty == NULL) {
+            $statusCode = 400;
+            $view = $this->view("Quantity field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        if ($qty <= 0.0) {
+            $statusCode = 400;
+            $view = $this->view("Quantity field must be a number greater than 0!", $statusCode);
+            return $this->handleView($view);
+        }
+        $duration = $treatment->getDuration();
+        if ($duration == NULL) {
+            $statusCode = 400;
+            $view = $this->view("Duration field must be defined!", $statusCode);
+            return $this->handleView($view);
+        }
+        if ($duration < 0) {
+            $statusCode = 400;
+            $view = $this->view("Duration field must be a number greater than 0!", $statusCode);
+            return $this->handleView($view);
+        }
         //Test if medicine exists in database
         $medicine = $treatment->getMedicine();
         if ($medicine) {
