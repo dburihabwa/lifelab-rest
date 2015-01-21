@@ -1,0 +1,8 @@
+language: php
+php:
+        - 5.5
+install:
+        composer install
+        composer update
+
+script: bin/phpunit -c app
