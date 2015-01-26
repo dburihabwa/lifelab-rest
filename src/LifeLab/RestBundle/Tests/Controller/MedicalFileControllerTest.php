@@ -3,8 +3,10 @@
 namespace LifeLab\RestBundle\Tests\Controller;
 
 use LifeLab\RestBundle\Entity\Treatment;
+use LifeLab\RestBundle\Entity\MedicalFile;
 use LifeLab\RestBundle\Entity\Medicine;
 
+require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,6 +14,37 @@ use JMS\Serializer\SerializerBuilder;
 
 
 class MedicalFileControllerTest extends WebTestCase {
+
+	private $medicalFile;
+	private $medicine;
+	private $entityManager;
+
+	public function __construct() {
+
+		$this->kernel = new \AppKernel('test', true);
+		$this->kernel->boot();
+		$this->container = $this->kernel->getContainer();
+		$this->entityManager = $this->container->get('doctrine')->getManager();
+	}
+
+	public function setUp() {
+		$this->medicalFile = new MedicalFile();
+		$this->entityManager->persist($this->medicalFile);
+		$this->medicine = new Medicine();
+		$this->medicine->setName('test');
+		$this->medicine->setShape('CREAM');
+		$this->medicine->setHowToTake('oral');
+		$this->medicine->setDangerLevel(1);
+		$this->entityManager->persist($this->medicine);
+		$this->entityManager->flush();
+	}
+
+	public function tearDown() {
+		$this->entityManager->remove($this->medicalFile);
+		$this->entityManager->remove($this->medicine);
+		$this->entityManager->flush();
+	}
+
 	/**
 	 * Returns a simple treatment
 	 * @return LifeLab\RestBundle\Entity\Treatment A simple treatment object
@@ -22,12 +55,8 @@ class MedicalFileControllerTest extends WebTestCase {
 		$treatment->setFrequency("6 fois par jour");
 		$treatment->setQuantity(23);
 		$treatment->setDuration(10);
-		$medJSON = '{
-			"id" : 1
-		}';
 		$serializer = SerializerBuilder::create()->build();
-		$medicine = $serializer->deserialize($medJSON, 'LifeLab\RestBundle\Entity\Medicine', 'json');
-		$treatment->setMedicine($medicine);
+		$treatment->setMedicine($this->medicine);
 		return $treatment;
 	}
 	
@@ -40,7 +69,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -48,6 +77,9 @@ class MedicalFileControllerTest extends WebTestCase {
 		$result = $client->getResponse()->getContent();
 		$newTreatment = $serializer->deserialize($result, 'LifeLab\RestBundle\Entity\Treatment', 'json');
 		$this->assertTrue($newTreatment->getId() != NULL);
+		$newTreatment = $this->entityManager->merge($newTreatment);
+		$this->entityManager->remove($newTreatment);
+		$this->entityManager->flush();
 	}
 
 	/**
@@ -62,7 +94,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -80,7 +112,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -98,7 +130,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -116,7 +148,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -134,7 +166,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -152,7 +184,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($treatment, 'json');
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -174,7 +206,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$jsonContent = $serializer->serialize($treatment, 'json');
 
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
@@ -196,7 +228,7 @@ class MedicalFileControllerTest extends WebTestCase {
 		$jsonContent = $serializer->serialize($treatment, 'json');
 
 		$client->request('POST', 
-			'/files/1/treatments', 
+			'/files/' . $this->medicalFile->getId() . '/treatments',
 			array(),
 			array(),
 			array('Content-Type' => 'application/json'),
