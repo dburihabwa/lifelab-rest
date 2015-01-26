@@ -9,6 +9,4 @@ php app/console doctrine:generate:entities LifeLabRestBundle
 # Update the database schema
 php app/console doctrine:schema:update --force 
 # List all available routes
-php app/console route:debug 
-# Start the server
-php app/console server:run
+php app/console route:debug
