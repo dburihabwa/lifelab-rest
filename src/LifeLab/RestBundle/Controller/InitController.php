@@ -50,7 +50,7 @@ class InitController extends Controller
       else if ($this->contains($dataToAdd['FORME'],'plante') ){$shape = 'Plant';}
       else if ($this->contains($dataToAdd['FORME'],'solution') ){$shape = 'Solution';}
       else if ($this->contains($dataToAdd['FORME'],'capsule') ){$shape = 'Pellet';}
-      else if ($this->contains($dataToAdd['FORME'],'crème') ){$shape = 'Creme';}
+      else if ($this->contains($dataToAdd['FORME'],'crème') ){$shape = 'Cream';}
       else if ($this->contains($dataToAdd['FORME'],'sirop') ){$shape = 'Liquid';}	
       else if ($this->contains($dataToAdd['FORME'],'suspension') ){$shape = 'Suspension';}	
       else{ return; }
