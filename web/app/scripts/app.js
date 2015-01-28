@@ -27,8 +27,8 @@
       .state('home', {
         url: '/patients',
         views: {
-          'searchPatient': { templateUrl: 'views/home-patientSearch.html', controller: 'patientsCtrl' },
-          'patientInformations': { templateUrl: 'views/noPatient.html'}
+          'searchPatient': { templateUrl: 'views/index-searchPatient.html', controller: 'patientsCtrl' },
+          'patientInformations': { templateUrl: 'views/index-noPatient.html'}
         }
       })
 
@@ -37,23 +37,24 @@
         url: '/patients/:id',
         abstract: true,
         views: {
-          'searchPatient': { templateUrl: 'views/home-patientSearch.html', controller: 'patientsCtrl' },
-          'patientInformations': { templateUrl: 'views/home-patient.html', controller: 'patientCtrl' },
+          'searchPatient': { templateUrl: 'views/index-searchPatient.html', controller: 'patientsCtrl' },
+          'patientInformations': { templateUrl: 'views/index-homePatient.html', controller: 'patientCtrl' }
         }
       })
 
         // sub state medical record of patient's informations
         .state('patientInformations.medicalRecord', {
           url: '/medicalRecord',
-          templateUrl: 'views/home-patient-medicalRecord.html',
+          templateUrl: 'views/index-homePatient-medicalRecord.html',
           controller: 'medicalRecordCtrl'
         })
 
-      .state('patientInformations.prescription', {
-        url: '/prescription',
-        templateUrl: 'views/add-prescription.html',
-        controller: 'PrescriptionCtrl'
-      });
+        // sub state medical record of patient's informations
+        .state('patientInformations.prescription', {
+          url: '/prescription',
+          templateUrl: 'views/index-homePatient-addPrescription.html',
+          controller: 'PrescriptionCtrl'
+        });
 
         // sub state add prescription of patient's informations ...
   });

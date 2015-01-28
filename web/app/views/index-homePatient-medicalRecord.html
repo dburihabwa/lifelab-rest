@@ -1,0 +1,77 @@
+<!-- Partial view :  Medical record-->
+
+<div class="medicalRecordContents">
+    <h3 class="subTitle"> <img src="images/medicalRecordicone.jpeg"> Medical record </h3>
+
+    <!-- filters -->
+    <div class="filtersMenu panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"> Filters </h3>
+        </div>
+        <ul class="list-group">
+            <li>
+                <div class="input-group">
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="illnessFilter" aria-label="illness" id="illnessFilter" ng-init="illnessFilter=true"/> <label for="illnessFilter"> Illness </label> <span class="badge"> {{numberOfIllness}}</span> </span>
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="allergyFilter" aria-label="allergy" id="allergyFilter" ng-init="allergyFilter=true" /> <label for="allergyFilter"> Allergy </label> <span class="badge"> {{numberOfAllergy}} </span> </span>
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="prescriptionFilter" aria-label="prescription" id="prescriptionFilter" ng-init="prescriptionFilter=true" /> <label for="prescriptionFilter"> Prescription </label> <span class="badge">{{numberOfPrescription}}</span> </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- Medical record contents -->
+    <div class="medicalRecordContentsList">
+        <div class="input-group searchMedicalRecordContent">
+            <input type="text" class="form-control searchContent" placeholder="Search for..." ng-model="search">
+            <span class="input-group-btn">
+                <button class="btn btn-default go" type="button">Go!</button>
+            </span>
+        </div><!-- /input-group -->
+
+        <ul class="list-group">
+            <li ng-repeat="item in medicalRecordContents | typeItem: allergyFilter:illnessFilter:prescriptionFilter | filter:search | orderBy:predicate:reverse | offset: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage"
+                class="list-group-item"
+                ng-class=" { 'list-group-item-danger' : item.type == 'allergy', 'list-group-item-warning' : item.type == 'illness', 'list-group-item-success' : item.type == 'prescription' }">
+                <div>
+
+                    <p> <span class="itemType"> {{item.type}} </span> : <span> {{item.name}} </span> </p>
+
+                    <div ng-if="item.treatment !== undifined">
+                        <p> treatment:</p>
+                        <p>
+                            <strong>{{item.treatment.medicine.name}}</strong>, {{item.treatment.quantity}} {{item.treatment.medicine.shape}} to be taken {{item.treatment.frequency}} /h, from <strong> {{item.treatment.date}} </strong> during <strong>{{item.duration}}</strong> days.
+                        </p>
+                    </div>
+
+                    <p>
+                        <span class="italic" ng-if="item.doctor !== undifined"> <strong>by</strong> {{item.doctor}} </span>
+                        <span class="italic date" ng-if="item.date !== undifined"> <strong> date </strong> : {{item.date}} </span>
+                    </p>
+
+                </div>
+            </li>
+        </ul>
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination">
+                <li ng-class="prevPageDisabled()"> <a href ng-click="prevPage()">« Prev</a> </li>
+                <li ng-repeat="n in range()" ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+                    <a ui-sref="patientInformations.medicalRecord">{{n}}</a>
+                </li>
+                <li ng-class="nextPageDisabled()">
+                    <a href ng-click="nextPage()">Next »</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

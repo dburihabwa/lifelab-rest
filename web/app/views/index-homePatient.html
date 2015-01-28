@@ -1,13 +1,13 @@
 <!-- Partial view :  Main container -->
 
 <!-- Loading -->
-<img ng-if="loading[0] === true && loading[1] === true" src="images/loading2.gif" class="loading">
+<img ng-if="loading[0] === true && loading[1] === true" src="images/loading2.gif" class="loading" />
 
 <!-- Patient informations -->
 <div ng-if="loading[0] === false && loading[0] === false" class="patientHome">
 
     <div id="patientHeader">
-    	<h3> <img src="images/utilisateur2.jpeg" style="height:50px;"> {{patient.name}} </h3>
+    	<h3> <img src="images/utilisateur2.jpeg" style="height:50px;" /> {{patient.name}} </h3>
 
     	<!-- Nav -->
         <nav>
@@ -19,5 +19,6 @@
         </nav>
     </div>
 
+	<!-- Item content : Medical record, form to add prescription etc ... -->
     <div ui-view></div>
 </div>

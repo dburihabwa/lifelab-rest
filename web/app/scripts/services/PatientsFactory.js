@@ -11,7 +11,7 @@ app.factory('Patients', ['$resource', function($resource){
 	var Patients = $resource('/patients/all');
 	var Patient = $resource('/patients/:id', {id:'@id'});
 	var File = $resource('/patients/:id/file', {id:'@id'});
-	var MedicalRecord = $resource('/files/:id/prescriptions', {id: '@id'});
+	var MedicalRecord = $resource('/files/:id/treatments', {id: '@id'});
 
 	var Factory = {
 
@@ -29,7 +29,7 @@ app.factory('Patients', ['$resource', function($resource){
 			return File.get({id:patientId}).$promise ;
 		},
 
-		getPrescriptions : function (medicalRecordId) {
+		getTreatments : function (medicalRecordId) {
 			return MedicalRecord.query({id:medicalRecordId}).$promise;
 		}
 	};

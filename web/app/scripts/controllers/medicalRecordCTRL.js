@@ -10,6 +10,14 @@
 app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Patients', function ($rootScope, $scope, $stateParams, Patients) {
 	
 	$scope.medicalRecordContents = [];
+	$scope.numberOfAllergy;
+	$scope.numberOfIllness;
+	$scope.numberOfPrescription;
+
+	// Filtres
+	$scope.illnessFilter;
+	$scope.allergyFilter;
+	$scope.prescriptionFilter;
 
 	// Build medical record
 	$scope.loadMedicalRecord = function(){
@@ -30,10 +38,13 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 			function(){
 				// Build medical record
 
+				$scope.numberOfAllergy = medicalRecord.allergies.length;
+				$scope.numberOfIllness = medicalRecord.illnesses.length;
+
 				medicalRecord.allergies.forEach(function (allergy) {
 					$scope.medicalRecordContents.push({
 		                type: 'allergy',
-		                name: allergy.name,
+		                name: allergy.name
 		            });
 				});
 				medicalRecord.illnesses.forEach(function (illness) {
@@ -44,14 +55,25 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 		            });
 				});
 
-				Patients.getPrescriptions(medicalRecord.id).then(function (prescriptions) {
-					prescriptions.forEach(function (prescription) {
+				Patients.getTreatments(medicalRecord.id).then(function (treatments) {
+					$scope.numberOfPrescription = treatments.length;
+
+					treatments.forEach(function (treatment) {
 						$scope.medicalRecordContents.push({
 			                type: 'prescription',
-			                name: prescription.description,
-			                date: prescription.date,
-			                treatments: prescription.treatments,
-			                doctor: prescription.doctor.name
+			                name: treatment.description,
+			                date: treatment.prescription.date,
+			                doctor: treatment.prescription.doctor.name,
+							treatment: {
+								date: treatment.date,
+								frequency: treatment.frequency,
+								quantity: treatment.quantity,
+								medicine: {
+									name: treatment.medicine.name,
+									shape: treatment.medicine.shape
+								}
+							},
+							duration: treatment.duration
 			            });
 					});
 				}, function (error) {
