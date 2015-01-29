@@ -45,7 +45,7 @@
 
                     <p> <span class="itemType"> {{item.type}} </span> : <span> {{item.name}} </span> </p>
 
-                    <div ng-if="item.treatment !== undifined">
+                    <div ng-if="item.treatment">
                         <p> treatment:</p>
                         <p>
                             <strong>{{item.treatment.medicine.name}}</strong>, {{item.treatment.quantity}} {{item.treatment.medicine.shape}} to be taken {{item.treatment.frequency}} /h, from <strong> {{item.treatment.date}} </strong> during <strong>{{item.duration}}</strong> days.
@@ -53,8 +53,8 @@
                     </div>
 
                     <p>
-                        <span class="italic" ng-if="item.doctor !== undifined"> <strong>by</strong> {{item.doctor}} </span>
-                        <span class="italic date" ng-if="item.date !== undifined"> <strong> date </strong> : {{item.date}} </span>
+                        <span class="italic" ng-if="item.doctor"> <strong>by</strong> {{item.doctor}} </span>
+                        <span class="italic date" ng-if="item.date"> <strong> date </strong> : {{item.date}} </span>
                     </p>
 
                 </div>
