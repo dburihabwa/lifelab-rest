@@ -62,7 +62,7 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 						$scope.medicalRecordContents.push({
 			                type: 'prescription',
 			                name: treatment.description,
-			                date: treatment.prescription.date,
+			                date: date: treatment.prescription && treatment.prescription.date ? treatment.prescription.date :  null,
 			                doctor: treatment.prescription.doctor.name,
 							treatment: {
 								date: treatment.date,
