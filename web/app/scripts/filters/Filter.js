@@ -36,7 +36,7 @@ app.filter('typeItem', function() {
 
   return function(input, allergy, illness, prescription) {
     var res = new Array;
-    if(allergy) { res = res.concat(input.filter(filterAllergy)); console.log(res);}
+    if(allergy) { res = res.concat(input.filter(filterAllergy)); }
     if(illness) { res = res.concat(input.filter(filterIllness)); }
     if(prescription) { res = res.concat(input.filter(filterPrescription));}
     return res;
