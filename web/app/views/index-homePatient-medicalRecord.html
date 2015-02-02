@@ -59,7 +59,7 @@
                     <div ng-if="item.treatment">
                         <p style="text-decoration:underline;"> treatment:</p>
                         <p>
-                            <strong>{{item.treatment.medicine.name}}</strong>, {{item.treatment.quantity}} {{item.treatment.medicine.shape}} to be taken {{item.treatment.frequency}} /h, from <strong> {{item.treatment.date}} </strong> during <strong>{{item.duration}}</strong> days.
+                            <strong>{{item.treatment.medicine.name}}</strong>, {{item.treatment.quantity}} {{item.treatment.medicine.shape}} to be taken {{item.treatment.frequency}} /h, from <strong> {{item.treatment.date.toString()}} </strong> during <strong>{{item.duration}}</strong> days.
                         </p>
                     </div>
 
