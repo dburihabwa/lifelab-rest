@@ -110,7 +110,19 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
   	};
 
   	$scope.pageCount = function() {
-    	return Math.ceil($scope.medicalRecordContents.length/$scope.itemsPerPage);
+		var nbcontents = 0;
+
+		if ($scope.illnessFilter == true && $scope.numberOfIllness != undefined) {
+			nbcontents = nbcontents + $scope.numberOfIllness;
+		}
+		if ($scope.allergyFilter == true && $scope.numberOfAllergy != undefined) {
+			nbcontents = nbcontents + $scope.numberOfAllergy ;
+		}
+		if ($scope.prescriptionFilter == true && $scope.numberOfPrescription != undefined) {
+			nbcontents = nbcontents + $scope.numberOfPrescription ;
+		}
+
+    	return Math.ceil(nbcontents / $scope.itemsPerPage);
   	};
 
   	$scope.nextPage = function() {
