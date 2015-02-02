@@ -34,11 +34,16 @@ app.filter('typeItem', function() {
     return element.type == "prescription";
   }
 
-  return function(input, allergy, illness, prescription) {
+  function filterInProgress(element) {
+    return element.treatmentInProgress == true;
+  }
+
+  return function(input, allergy, illness, prescription, inProgress) {
     var res = new Array;
     if(allergy) { res = res.concat(input.filter(filterAllergy)); }
     if(illness) { res = res.concat(input.filter(filterIllness)); }
     if(prescription) { res = res.concat(input.filter(filterPrescription));}
+    if(inProgress) { res = res.filter(filterInProgress);}
     return res;
   };
 });

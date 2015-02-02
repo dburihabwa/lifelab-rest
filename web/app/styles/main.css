@@ -215,6 +215,7 @@ nav {
 .filtersMenu {
   float:left;
   width: 11em;
+  position: fixed;
 }
 
 .medicalRecordContentsList {
@@ -241,5 +242,23 @@ nav {
 
 .searchContent, .go{
   border-radius: 40px;
+}
+
+.treatmentInProgress {
+  position: absolute;
+  top:0px;
+  right:0px;
+  height: 2em;
+  background-color: #46b8da;
+  border-radius: 80px 0px 0px 80px;
+  width: 11em;
+  text-align: center;
+  color: #ffffff;
+  vertical-align: middle;
+  border-color: #0078a3;
+  border-width: 1px;
+  border-style: solid;
+  font-style: italic;
+
 }
 

@@ -13,11 +13,13 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	$scope.numberOfAllergy;
 	$scope.numberOfIllness;
 	$scope.numberOfPrescription;
+	$scope.numberInProgress;
 
-	// Filtres
+	// Filters
 	$scope.illnessFilter;
 	$scope.allergyFilter;
 	$scope.prescriptionFilter;
+	$scope.inProgressFilter;
 
 	// Build medical record
 	$scope.loadMedicalRecord = function(){
@@ -62,10 +64,10 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 						$scope.medicalRecordContents.push({
 			                type: 'prescription',
 			                name: treatment.description,
-			                date: treatment.prescription && treatment.prescription.date ? treatment.prescription.date :  null,
+			                date: treatment.prescription && treatment.prescription.date ? new Date(treatment.prescription.date) :  null,
 			                doctor: treatment.prescription && treatment.prescription.doctor.name ? treatment.prescription.doctor.name : null,
 							treatment: {
-								date: treatment.date,
+								date: new Date(treatment.date),
 								frequency: treatment.frequency,
 								quantity: treatment.quantity,
 								medicine: {
@@ -73,13 +75,15 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 									shape: treatment.medicine.shape
 								}
 							},
-							duration: treatment.duration
+							duration: treatment.duration,
+							treatmentInProgress: addDays(new Date(treatment.date), treatment.duration) >= new Date()
 			            });
 					});
+					$scope.numberInProgress = $scope.medicalRecordContents.filter(filterInProgress).length;
+
 				}, function (error) {
 					console.error(error);
 				});
-
 
 				$rootScope.loading[1] = false; 
 			}
@@ -87,8 +91,19 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	};
 	$scope.loadMedicalRecord();
 
-	
+	// Function for Dates
 
+	// Add Days to a date
+	function addDays(date, days) {
+		var result = new Date(date);
+		result.setDate(date.getDate() + days);
+		return result;
+	}
+
+	//Filter
+	function filterInProgress(element) {
+		return element.treatmentInProgress == true;
+	}
 
 	// Sort informations
 	$scope.predicate = '-date';
