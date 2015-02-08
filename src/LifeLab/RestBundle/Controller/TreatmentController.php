@@ -3,6 +3,7 @@
 namespace LifeLab\RestBundle\Controller;
 
 use LifeLab\RestBundle\Controller\AbstractController;
+use LifeLab\RestBundle\Entity\Intake;
 use LifeLab\RestBundle\Entity\Treatment;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +50,53 @@ class TreatmentController extends AbstractController {
         $entityManager->flush();
         $statusCode = 200;
         $view = $this->view($intake, $statusCode);
+        return $this->handleView($view);
+    }
+
+    private function getIntakesTaken($treatmentId) {
+    	$repository =  $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Intake');
+        return $repository->findByTreatment($treatment->getId());
+    }
+
+    public function getIntakesAction($id) {
+        $treatment = $this->getEntity($id);
+        if ($treatment == NULL) {
+            throw new NotFoundHttpException('Treatment not found');
+        }
+        $taken = $this->getIntakesTaken($id);
+        $statusCode = 200;
+        $view = $this->view($intakes, $statusCode);
+        return $this->handleView($view);
+    }
+
+    public function getIntakesFullAction($id) {
+        $treatment = $this->getEntity($id);
+        if ($treatment == NULL) {
+            throw new NotFoundHttpException('Treatment not found');
+        }
+        $taken = $this->getIntakesTaken($id);
+        $intakes = array();
+        foreach ($taken as $i) {
+        	$key = $i->getTime()->format('c');
+        	$intakes[$key] = $i;
+        }
+        $date = clone $treatment->getDate();
+        $duration = new \DateInterval('P' . $treatment->getDuration() . 'D');
+        $endDate = clone $treatment->getDate();
+        $endDate = $endDate->add($duration);
+        $timeInterval = new \DateInterval('PT' . $treatment->getFrequency() . 'H');
+        while ($date < $endDate) {
+        	$intake = new Intake();
+        	$intake->setTreatment($treatment);
+        	$intake->setTime(clone $date);
+        	$key = $intake->getTime()->format('c');
+        	if (!array_key_exists($key, $intakes)) {
+        		$intakes[$key] = 'not taken';
+        	}
+        	$date = $date->add($timeInterval);
+        } 
+        $statusCode = 200;
+        $view = $this->view($intakes, $statusCode);
         return $this->handleView($view);
     }
 }

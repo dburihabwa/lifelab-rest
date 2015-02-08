@@ -2,7 +2,7 @@
 
 namespace LifeLab\RestBundle\Entity;
 
-
+use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -34,6 +34,7 @@ class Intake
     private $time;
 
     /**
+     * @Exclude
      * @Type ("LifeLab\RestBundle\Entity\Treatment")
      * @ORM\ManyToOne(targetEntity="Treatment")
      * @ORM\JoinColumn(name="treatment_id", referencedColumnName="id", nullable=false)
