@@ -86,6 +86,28 @@ class Treatment
     private $medicalFile;
 
     /**
+     * Builds and returns a list of intakes matching covering the duration of the treatment.
+     * @return LifeLab\RestBundle\Entity\Intake[] An array of intakes covering the duration of the treatment 
+     */
+    public function computeExpectedIntakes() {
+        $intakes = array();        
+        $date = clone $this->date;
+        $duration = new \DateInterval('P' . $this->duration . 'D');
+        $endDate = clone $this->date;
+        $endDate = $endDate->add($duration);
+        $timeInterval = new \DateInterval('PT' . $this->frequency . 'H');
+        while ($date < $endDate) {
+            $key = $date->format('c');
+            $intake = new Intake();
+            $intake->setTreatment($this);
+            $intake->setTime(clone $date);
+            $intakes[$key] = $intake;
+            $date = $date->add($timeInterval);
+        }
+        return $intakes;
+    }
+
+    /**
      * Get id
      *
      * @return integer 

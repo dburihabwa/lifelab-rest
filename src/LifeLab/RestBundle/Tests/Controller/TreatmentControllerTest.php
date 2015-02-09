@@ -124,7 +124,7 @@ class TreatmentControllerTest extends WebTestCase {
 		$this->treatment = $repsonseTreatment;
 
 		$this->intake = new Intake();
-		$this->intake->setTime(new \Datetime());
+		$this->intake->setTime($this->treatment->getDate());
 		$jsonContent = $serializer->serialize($this->intake, 'json');
 		$url = '/treatments/' . $this->treatment->getId() . '/intakes';
 		$client->request('POST', 
@@ -233,5 +233,36 @@ class TreatmentControllerTest extends WebTestCase {
 			array('Content-Type' => 'application/json'),
 			$jsonContent);
 		$this->assertEquals(409, $client->getResponse()->getStatusCode());
+	}
+
+	public function testPostUnexpectedIntake() {
+		$this->treatment = $this->getTreatment($this->medicalFile, new \Datetime(), 1, $this->medicine, 24, 1);
+		$serializer = SerializerBuilder::create()->build();
+		$jsonContent = $serializer->serialize($this->treatment, 'json');
+		$url = '/files/' . $this->medicalFile->getId() . '/treatments';
+		$client = static::createClient();
+		$client->request('POST',
+			$url,
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$jsonResponse = $client->getResponse()->getContent();
+		$repsonseTreatment = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Treatment', 'json');
+		$this->treatment = $repsonseTreatment;
+
+		$intake = new Intake();
+		$time = new \Datetime();
+		$time->add(new \DateInterval('PT100S'));
+		$intake->setTime($time);
+		$jsonContent = $serializer->serialize($this->intake, 'json');
+		$url = '/treatments/' . $this->treatment->getId() . '/intakes';
+		$client->request('POST',
+			$url,
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$this->assertEquals(400, $client->getResponse()->getStatusCode());
 	}
 }

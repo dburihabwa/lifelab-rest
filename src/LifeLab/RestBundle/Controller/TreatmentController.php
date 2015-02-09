@@ -44,6 +44,15 @@ class TreatmentController extends AbstractController {
             $view = $this->view('time is missing!', $statusCode);
             return $this->handleView($view);
         }
+        $tz = new \DateTimeZone(date_default_timezone_get());
+        $intake->getTime()->setTimezone($tz);
+        $expectedIntakes  = $treatment->computeExpectedIntakes();
+        if (!array_key_exists($intake->getTime()->format('c'), $expectedIntakes)) {
+            $statusCode = 400;
+            $message = 'Time is not in expected intakes!';
+            $view = $this->view($message, $statusCode);
+            return $this->handleView($view);   
+        }
         $intake->setTreatment($treatment);
         $entityManager = $this->getDoctrine()->getManager();
         try {
@@ -60,6 +69,11 @@ class TreatmentController extends AbstractController {
         return $this->handleView($view);
     }
 
+    /**
+     * Returns the list of LifeLab\RestBundle\Entity\Intake related to treatement id saved in the database.
+     * @param {integer} Id of the LifeLab\RestBundle\Entity\Treatment
+     * @return LifeLab\RestBundle\Entity\Treatment[] An array of Intakes
+     */
     private function getIntakesTaken($treatmentId) {
     	$repository =  $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Intake');
         return $repository->findByTreatment($treatmentId);
@@ -82,26 +96,11 @@ class TreatmentController extends AbstractController {
             throw new NotFoundHttpException('Treatment not found');
         }
         $taken = $this->getIntakesTaken($id);
-        $intakes = array();
+        $intakes = $treatment->computeExpectedIntakes();
         foreach ($taken as $i) {
             $key = $i->getTime()->format('c');
             $intakes[$key] = $i;
         }
-        $date = clone $treatment->getDate();
-        $duration = new \DateInterval('P' . $treatment->getDuration() . 'D');
-        $endDate = clone $treatment->getDate();
-        $endDate = $endDate->add($duration);
-        $timeInterval = new \DateInterval('PT' . $treatment->getFrequency() . 'H');
-        while ($date < $endDate) {
-            $key = $date->format('c');
-            if (!array_key_exists($key, $intakes)) {
-                $intake = new Intake();
-                $intake->setTreatment($treatment);
-                $intake->setTime(clone $date);
-                $intakes[$key] = $intake;
-            }
-            $date = $date->add($timeInterval);
-        } 
         $statusCode = 200;
         $view = $this->view(array_values($intakes), $statusCode);
         return $this->handleView($view);
