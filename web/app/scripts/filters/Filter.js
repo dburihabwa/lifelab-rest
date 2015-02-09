@@ -11,17 +11,23 @@
 /**
  * filter for pagination
  */
-app.filter('offset', function() {
+app.filter('startFrom', function() {
   return function(input, start) {
-    start = parseInt(start, 10);
-    return input.slice(start);
+    if(input != undefined){
+      start = parseInt(start, 10);
+      return input.slice(start);
+    }
+    else {
+      return [];
+    }
   };
 });
 
 /**
  * Filter for item type
  */
-app.filter('typeItem', function() {
+app.filter('type', function() {
+
   function filterAllergy(element) {
     return element.type == "allergy";
   }
@@ -40,10 +46,13 @@ app.filter('typeItem', function() {
 
   return function(input, allergy, illness, prescription, inProgress) {
     var res = new Array;
-    if(allergy) { res = res.concat(input.filter(filterAllergy)); }
-    if(illness) { res = res.concat(input.filter(filterIllness)); }
-    if(prescription) { res = res.concat(input.filter(filterPrescription));}
-    if(inProgress) { res = res.filter(filterInProgress);}
+    if(input != undefined){
+      if(allergy) { res = res.concat(input.filter(filterAllergy)); }
+      if(illness) { res = res.concat(input.filter(filterIllness)); }
+      if(prescription) { res = res.concat(input.filter(filterPrescription));}
+      if(inProgress) { res = res.filter(filterInProgress);}
+    }
+
     return res;
   };
 });

@@ -7,7 +7,7 @@
  * # medicalRecordCtrl
  * Controller of the lifeMonitorDoctorApp
  */
-app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Patients', function ($rootScope, $scope, $stateParams, Patients) {
+app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Patients', 'filterFilter', 'typeFilter', function ($rootScope, $scope, $stateParams, Patients, filterFilter, typeFilter) {
 	
 	$scope.medicalRecordContents = [];
 	$scope.numberOfAllergy;
@@ -16,14 +16,16 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	$scope.numberInProgress;
 
 	// Filters
-	$scope.illnessFilter;
-	$scope.allergyFilter;
-	$scope.prescriptionFilter;
-	$scope.inProgressFilter;
+	$scope.filters = {
+		illnessFilter: true,
+		allergyFilter: true,
+		prescriptionFilter: true,
+		inProgressFilter: false,
+		search:''
+	};
 
-	$scope.filterChange = function() {
-		$scope.currentPage = 1;
-	}
+	// medicalRecord filtered
+	$scope.filtered;
 
 	// Build medical record
 	$scope.loadMedicalRecord = function(){
@@ -89,13 +91,14 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 					console.error(error);
 				});
 
-				$rootScope.loading[1] = false; 
+				$rootScope.loading[1] = false;
+				$scope.filtered = $scope.medicalRecordContents;
 			}
 		);
 	};
 	$scope.loadMedicalRecord();
 
-	// Function for Dates
+	// ----- Function for Dates
 
 	// Add Days to a date
 	function addDays(date, days) {
@@ -104,19 +107,38 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 		return result;
 	}
 
-	//Filter
+	// Watch filters and filters items
+	$scope.$watchCollection('filters',  function(value) {
+		if($scope.filtered != undefined){
+			// Create filtered
+			console.log(value);
+			$scope.filtered = filterFilter(typeFilter($scope.medicalRecordContents, $scope.filters.allergyFilter, $scope.filters.illnessFilter, $scope.filters.prescriptionFilter, $scope.filters.inProgressFilter), value.search);
+
+			// Then calculate noOfPages
+			$scope.updatePagination();
+		}
+	});
+
+	// Update pagination
+	$scope.updatePagination = function() {
+		$scope.currentPage = 1;
+		$scope.pageCount();
+	};
+
+	// In progress filter
 	function filterInProgress(element) {
 		return element.treatmentInProgress == true;
 	}
 
-	// Sort informations
+	// ----- Sort informations
 	$scope.predicate = '-date';
 	$scope.reverse = false ;
 
 
 	// Pagination
-	$scope.itemsPerPage = 10;
+	$scope.itemsPerPage = 5;
   	$scope.currentPage = 1;
+	$scope.noOfPages;
 
   	$scope.prevPage = function() {
     	if ($scope.currentPage > 1) {
@@ -129,22 +151,11 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
   	};
 
   	$scope.pageCount = function() {
-		var nbcontents = 0;
-
-		if ($scope.illnessFilter  && $scope.numberOfIllness != undefined) {
-			nbcontents = nbcontents + $scope.numberOfIllness;
+		if($scope.filtered != undefined) {
+			$scope.noOfPages = Math.ceil($scope.filtered.length / $scope.itemsPerPage);
+		} else {
+			$scope.noOfPages = Math.ceil($scope.medicalRecordContents.length / $scope.itemsPerPage);
 		}
-		if ($scope.allergyFilter && $scope.numberOfAllergy != undefined) {
-			nbcontents = nbcontents + $scope.numberOfAllergy ;
-		}
-		if ($scope.prescriptionFilter && $scope.numberOfPrescription != undefined) {
-			nbcontents = nbcontents + $scope.numberOfPrescription ;
-		}
-		if ($scope.inProgressFilter && $scope.numberInProgress != undefined) {
-			nbcontents = $scope.numberOfPrescription ;
-		}
-
-    	return Math.ceil(nbcontents / $scope.itemsPerPage);
   	};
 
   	$scope.nextPage = function() {
@@ -163,16 +174,16 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	    var start;
 
 	    start = $scope.currentPage;
-	    if ( start + rangeSize -1 <= $scope.pageCount() ) {
+	    if ( start + rangeSize -1 <= $scope.noOfPages ) {
 	    	for (var i=start; i<=start+rangeSize-1; i++) {
 		      ret.push(i);
 		    }
 	    } else {
-		    var rangmin = start - (rangeSize - ($scope.pageCount() - start +1)) ;
+		    var rangmin = start - (rangeSize - ($scope.noOfPages - start +1)) ;
 	    	if( rangmin < 1){
 	    		rangmin = 1 ;
 	    	}
-	    	for (i=rangmin; i<= $scope.pageCount(); i++) {
+	    	for (i=rangmin; i<= $scope.noOfPages; i++) {
 	      		ret.push(i);
 	    	}
 		}
