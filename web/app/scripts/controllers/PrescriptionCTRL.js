@@ -9,6 +9,7 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	$scope.treatment = {};
 	$scope.medicines = [];
 	$scope.doctors = [];
+	$scope.error = {};
 
 	$scope.listDoctors = function () {
 		Doctors.getAll().then(function (doctors) {
@@ -31,6 +32,25 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 	$scope.submit = function () {
 		$scope.prescription.date = (new Date()).toISOString().replace(/\.\d{3}/, '');
 		Patients.getPatient($stateParams.id).then(function (patient) {
+			if (!$scope.treatment) {
+				$scope.error.title = 'Treatment was not initialized properly';
+				$scope.error.message = 'Please make sure you filled in all the fields in the form.'
+				$('#errorModal').modal('show');
+				return;
+			}
+			if (!$scope.treatment.medicine) {
+				$scope.error.title = 'Missing medicaction';
+				$scope.error.message = 'The treatment must indicate some sort of medication.';
+				$('#errorModal').modal('show');
+				return;
+			}
+			if (!$scope.treatment.date) {
+				var error = new Error('Treatment date is missing!');
+				$scope.error.title = 'Missing treatment date';
+				$scope.error.message = 'The treatment must indicate a start date.';
+				$('#errorModal').modal('show');
+				return;
+			}
 			var medicalFile = patient.medical_file;
 			$scope.prescription.medicalFile = medicalFile;
 			$scope.treatment.date = $scope.treatment.date.toISOString().replace(/\.\d{3}/, '');
@@ -40,13 +60,19 @@ app.controller('PrescriptionCtrl', ['$rootScope', '$scope', '$stateParams', '$st
 				MedicalRecords.addTreatment(medicalFile.id, $scope.treatment).success(function (dataTreatTreatment, statusTreatment, headersTreatment, configTreatment) {
 					$location.path('/patients/' + $stateParams.id + '/medicalRecord');
 				}).error(function (dataTreatment, statusTreatment, headersTreatment, configTreatment) {
-					alert('Oops! Couldn\'t save the treatment');
+					$scope.error.title = 'Could not save treatment';
+					$scope.error.message = dataTreatment;
+					$('#errorModal').modal('show');
 				});
 			}).error(function (data, status, headers, config) {
-				alert('Oops! Couldn\'t save the prescription');
+				$scope.error.title = 'Could not save prescription';
+				$scope.error.message = data;
+				$('#errorModal').modal('show');
 			});
 		}, function (error) {
-			alert(error);
+			$scope.error.title = 'Could not retrieve medical record';
+			$scope.error.message = error.message;
+			$('#errorModal').modal('show');
 		});
 		$('#prescriptionDoctorsModal').modal('hide');
 	};
