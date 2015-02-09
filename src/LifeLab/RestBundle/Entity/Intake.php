@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Intake
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="unique_intake", columns={"treatment_id", "time"})})
  * @ORM\Entity
  */
 class Intake

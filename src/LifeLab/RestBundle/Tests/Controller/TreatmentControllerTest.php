@@ -138,7 +138,7 @@ class TreatmentControllerTest extends WebTestCase {
 		$this->assertTrue($this->intake->getId() != NULL);
 	}
 
-		public function testPostIntakeWithMissingDate() {
+	public function testPostIntakeWithMissingDate() {
 		$this->treatment = $this->getTreatment($this->medicalFile, new \Datetime(), 1, $this->medicine, 1, 1);
 		$serializer = SerializerBuilder::create()->build();
 		$jsonContent = $serializer->serialize($this->treatment, 'json');
@@ -190,5 +190,48 @@ class TreatmentControllerTest extends WebTestCase {
 			array('Content-Type' => 'application/json'),
 			null);
 		$this->assertEquals($client->getResponse()->getStatusCode(), 400);
+	}
+
+	public function testPostIntakeDuplicate() {
+		$this->treatment = $this->getTreatment($this->medicalFile, new \Datetime(), 1, $this->medicine, 1, 1);
+		$serializer = SerializerBuilder::create()->build();
+		$jsonContent = $serializer->serialize($this->treatment, 'json');
+		$url = '/files/' . $this->medicalFile->getId() . '/treatments';
+		$client = static::createClient();
+		$client->request('POST',
+			$url,
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$jsonResponse = $client->getResponse()->getContent();
+		$repsonseTreatment = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Treatment', 'json');
+		$this->treatment = $repsonseTreatment;
+
+		$this->intake = new Intake();
+		$this->intake->setTime(new \Datetime());
+		$jsonContent = $serializer->serialize($this->intake, 'json');
+		$url = '/treatments/' . $this->treatment->getId() . '/intakes';
+		$client->request('POST',
+			$url,
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$jsonResponse = $client->getResponse()->getContent();
+		$this->intake = $serializer->deserialize($jsonResponse, 'LifeLab\RestBundle\Entity\Intake', 'json');
+		$this->assertTrue($this->intake->getId() != NULL);
+
+		$intake = new Intake();
+		$intake->setTime(new \Datetime());
+		$jsonContent = $serializer->serialize($intake, 'json');
+		$url = '/treatments/' . $this->treatment->getId() . '/intakes';
+		$client->request('POST',
+			$url,
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$this->assertEquals(409, $client->getResponse()->getStatusCode());
 	}
 }

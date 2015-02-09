@@ -46,8 +46,15 @@ class TreatmentController extends AbstractController {
         }
         $intake->setTreatment($treatment);
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($intake);
-        $entityManager->flush();
+        try {
+            $entityManager->persist($intake);
+            $entityManager->flush();
+        } catch (\Exception $e) {
+            $statusCode = 409;
+            $message = 'An intake matching this time and treatment already exists in the database!';
+            $view = $this->view($message, $statusCode);
+            return $this->handleView($view);
+        }
         $statusCode = 200;
         $view = $this->view($intake, $statusCode);
         return $this->handleView($view);
@@ -55,7 +62,7 @@ class TreatmentController extends AbstractController {
 
     private function getIntakesTaken($treatmentId) {
     	$repository =  $this->getDoctrine()->getManager()->getRepository('LifeLabRestBundle:Intake');
-        return $repository->findByTreatment($treatment->getId());
+        return $repository->findByTreatment($treatmentId);
     }
 
     public function getIntakesAction($id) {
@@ -65,7 +72,7 @@ class TreatmentController extends AbstractController {
         }
         $taken = $this->getIntakesTaken($id);
         $statusCode = 200;
-        $view = $this->view($intakes, $statusCode);
+        $view = $this->view($taken, $statusCode);
         return $this->handleView($view);
     }
 
@@ -77,8 +84,8 @@ class TreatmentController extends AbstractController {
         $taken = $this->getIntakesTaken($id);
         $intakes = array();
         foreach ($taken as $i) {
-        	$key = $i->getTime()->format('c');
-        	$intakes[$key] = $i;
+            $key = $i->getTime()->format('c');
+            $intakes[$key] = $i;
         }
         $date = clone $treatment->getDate();
         $duration = new \DateInterval('P' . $treatment->getDuration() . 'D');
@@ -86,17 +93,17 @@ class TreatmentController extends AbstractController {
         $endDate = $endDate->add($duration);
         $timeInterval = new \DateInterval('PT' . $treatment->getFrequency() . 'H');
         while ($date < $endDate) {
-        	$intake = new Intake();
-        	$intake->setTreatment($treatment);
-        	$intake->setTime(clone $date);
-        	$key = $intake->getTime()->format('c');
-        	if (!array_key_exists($key, $intakes)) {
-        		$intakes[$key] = 'not taken';
-        	}
-        	$date = $date->add($timeInterval);
+            $key = $date->format('c');
+            if (!array_key_exists($key, $intakes)) {
+                $intake = new Intake();
+                $intake->setTreatment($treatment);
+                $intake->setTime(clone $date);
+                $intakes[$key] = $intake;
+            }
+            $date = $date->add($timeInterval);
         } 
         $statusCode = 200;
-        $view = $this->view($intakes, $statusCode);
+        $view = $this->view(array_values($intakes), $statusCode);
         return $this->handleView($view);
     }
 }
