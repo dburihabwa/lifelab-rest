@@ -21,6 +21,10 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	$scope.prescriptionFilter;
 	$scope.inProgressFilter;
 
+	$scope.filterChange = function() {
+		$scope.currentPage = 1;
+	}
+
 	// Build medical record
 	$scope.loadMedicalRecord = function(){
 		var medicalRecord = null;
@@ -127,14 +131,17 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
   	$scope.pageCount = function() {
 		var nbcontents = 0;
 
-		if ($scope.illnessFilter == true && $scope.numberOfIllness != undefined) {
+		if ($scope.illnessFilter  && $scope.numberOfIllness != undefined) {
 			nbcontents = nbcontents + $scope.numberOfIllness;
 		}
-		if ($scope.allergyFilter == true && $scope.numberOfAllergy != undefined) {
+		if ($scope.allergyFilter && $scope.numberOfAllergy != undefined) {
 			nbcontents = nbcontents + $scope.numberOfAllergy ;
 		}
-		if ($scope.prescriptionFilter == true && $scope.numberOfPrescription != undefined) {
+		if ($scope.prescriptionFilter && $scope.numberOfPrescription != undefined) {
 			nbcontents = nbcontents + $scope.numberOfPrescription ;
+		}
+		if ($scope.inProgressFilter && $scope.numberInProgress != undefined) {
+			nbcontents = $scope.numberOfPrescription ;
 		}
 
     	return Math.ceil(nbcontents / $scope.itemsPerPage);

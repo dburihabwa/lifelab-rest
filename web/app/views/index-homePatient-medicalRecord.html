@@ -11,22 +11,22 @@
         <ul class="list-group">
             <li>
                 <div class="input-group">
-                    <span class="input-group-addon"> <input type="checkbox" ng-model="illnessFilter" aria-label="illness" id="illnessFilter" ng-init="illnessFilter=true"/> <label for="illnessFilter"> Illness </label> <span class="badge"> {{numberOfIllness}}</span> </span>
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="illnessFilter" ng-change="filterChange()" aria-label="illness" id="illnessFilter" ng-init="illnessFilter=true"/> <label for="illnessFilter"> Illness </label> <span class="badge"> {{numberOfIllness}}</span> </span>
                 </div>
             </li>
             <li>
                 <div class="input-group">
-                    <span class="input-group-addon"> <input type="checkbox" ng-model="allergyFilter" aria-label="allergy" id="allergyFilter" ng-init="allergyFilter=true" /> <label for="allergyFilter"> Allergy </label> <span class="badge"> {{numberOfAllergy}} </span> </span>
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="allergyFilter" ng-change="filterChange()" aria-label="allergy" id="allergyFilter" ng-init="allergyFilter=true" /> <label for="allergyFilter"> Allergy </label> <span class="badge"> {{numberOfAllergy}} </span> </span>
                 </div>
             </li>
             <li>
                 <div class="input-group">
-                    <span class="input-group-addon"> <input type="checkbox" ng-model="prescriptionFilter" aria-label="prescription" id="prescriptionFilter" ng-init="prescriptionFilter=true" /> <label for="prescriptionFilter"> Prescription </label> <span class="badge">{{numberOfPrescription}}</span> </span>
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="prescriptionFilter" ng-change="filterChange()" aria-label="prescription" id="prescriptionFilter" ng-init="prescriptionFilter=true" /> <label for="prescriptionFilter"> Prescription </label> <span class="badge">{{numberOfPrescription}}</span> </span>
                 </div>
             </li>
             <li>
                 <div class="input-group">
-                    <span class="input-group-addon"> <input type="checkbox" ng-model="inProgressFilter" aria-label="inprogress" id="inProgressFilter" ng-init="inProgressFilter=false" /> <label for="inProgressFilter"> In progress </label> <span class="badge">{{numberInProgress}}</span> </span>
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="inProgressFilter" ng-change="filterChange()" aria-label="inprogress" id="inProgressFilter" ng-init="inProgressFilter=false" /> <label for="inProgressFilter"> In progress </label> <span class="badge">{{numberInProgress}}</span> </span>
                 </div>
             </li>
         </ul>
