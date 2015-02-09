@@ -12,4 +12,4 @@ cp app/config/parameters.yml.dist app/config/parameters.yml
 sed  -i 's/<database username>/symfony/' app/config/parameters.yml
 sed  -i 's/<database password>/symfony/' app/config/parameters.yml
 php app/console doctrine:schema:update --force
-bin/phpunit -c app/
+bin/phpunit -c app/ --log-junit log-junit.xml
