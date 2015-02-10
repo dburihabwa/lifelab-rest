@@ -55,7 +55,9 @@
                 <div>
 
                     <div class="treatmentInProgress" ng-if="item.treatmentInProgress">
-                        <p> treatment in progress </p>
+                        <a ui-sref = "patientInformations.treatmentVisualization({id: $stateParams.id, treatmentId: {{item.treatment.id}}})">
+                            <p>treatment in progress</p>
+                        </a>
                     </div>
 
                     <!-- Type and name -->

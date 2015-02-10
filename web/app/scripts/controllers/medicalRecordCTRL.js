@@ -75,6 +75,7 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 			                date: treatment.prescription && treatment.prescription.date ? new Date(treatment.prescription.date) :  new Date(treatment.date),
 			                doctor: treatment.prescription && treatment.prescription.doctor.name ? treatment.prescription.doctor.name : null,
 							treatment: {
+								id: treatment.id,
 								date: new Date(treatment.date),
 								frequency: treatment.frequency,
 								quantity: treatment.quantity,

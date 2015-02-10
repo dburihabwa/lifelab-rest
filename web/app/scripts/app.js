@@ -56,10 +56,16 @@
           controller: 'PrescriptionCtrl'
         })
 
-        // sub state add an appointment of patient's informations ...
+        .state('patientInformations.treatmentVisualization', {
+          url: '/treatmentVisualization/:treatmentId',
+          templateUrl: 'views/index-homePatient-treatmentVisualization.html',
+          controller: 'TreatmentVisualizationCtrl'
+        })
+	
+		// sub state add an appointment of patient's informations ...
         .state('patientInformations.appointment', {
           url: '/appointment',
           templateUrl: 'views/index-homePatient-appointment.html',
           controller: 'AppointmentCtrl'
-        });
+        });;
   });
