@@ -47,6 +47,7 @@
             </span>
         </div><!-- /input-group -->
 
+        <img class="nocontent" src="images/no_content.gif" ng-if="filtered.length == 0" />
         <ul class="list-group">
             <li ng-repeat="item in filtered | orderBy:predicate:reverse | startFrom: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage"
                 class="list-group-item"

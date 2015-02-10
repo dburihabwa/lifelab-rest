@@ -83,7 +83,7 @@ nav {
 }
 
 .subTitle img {
-  height: 50px;
+  height: 60px;
 }
 
 .italic {
@@ -270,4 +270,10 @@ nav {
 .treatment{
   color: #3c763d;
   background-color: #dff0c1;
+}
+
+.nocontent{
+  margin-left: 10em;
+  margin-top: 3em;
+  width: 25em;
 }

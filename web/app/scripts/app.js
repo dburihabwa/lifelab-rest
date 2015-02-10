@@ -10,7 +10,7 @@
  */
 
  // Definie le module lifeMonitorDoctorApp et ses dépendances
- var app = angular.module('lifeMonitorDoctorApp', ['ngAnimate','ngResource','ui.router', 'ui.select', 'ui.date']);
+ var app = angular.module('lifeMonitorDoctorApp', ['ngAnimate','ngResource','ui.router', 'ui.select', 'ui.date', 'ui.calendar']);
   app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.defaults.headers.common = 'Content-Type: application/json';
@@ -49,12 +49,17 @@
           controller: 'medicalRecordCtrl'
         })
 
-        // sub state medical record of patient's informations
+        // sub state addPrescription of patient's informations
         .state('patientInformations.prescription', {
           url: '/prescription',
           templateUrl: 'views/index-homePatient-addPrescription.html',
           controller: 'PrescriptionCtrl'
-        });
+        })
 
-        // sub state add prescription of patient's informations ...
+        // sub state add an appointment of patient's informations ...
+        .state('patientInformations.appointment', {
+          url: '/appointment',
+          templateUrl: 'views/index-homePatient-appointment.html',
+          controller: 'AppointmentCtrl'
+        });
   });
