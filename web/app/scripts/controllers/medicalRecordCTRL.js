@@ -10,16 +10,18 @@
 app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Patients', 'filterFilter', 'typeFilter', function ($rootScope, $scope, $stateParams, Patients, filterFilter, typeFilter) {
 	
 	$scope.medicalRecordContents = [];
-	$scope.numberOfAllergy;
-	$scope.numberOfIllness;
-	$scope.numberOfPrescription;
-	$scope.numberInProgress;
+	$scope.numberOfAllergy = 0;
+	$scope.numberOfIllness = 0;
+	$scope.numberOfPrescription = 0;
+	$scope.numberInProgress = 0;
+	$scope.numberSelfMedication = 0;
 
 	// Filters
 	$scope.filters = {
 		illnessFilter: true,
 		allergyFilter: true,
 		prescriptionFilter: true,
+		selfMedicationFilter: true,
 		inProgressFilter: false,
 		search:''
 	};
@@ -68,9 +70,9 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 
 					treatments.forEach(function (treatment) {
 						$scope.medicalRecordContents.push({
-			                type: 'prescription',
+			                type: treatment.prescription ? 'prescription' : 'treatment',
 			                name: treatment.description,
-			                date: treatment.prescription && treatment.prescription.date ? new Date(treatment.prescription.date) :  null,
+			                date: treatment.prescription && treatment.prescription.date ? new Date(treatment.prescription.date) :  new Date(treatment.date),
 			                doctor: treatment.prescription && treatment.prescription.doctor.name ? treatment.prescription.doctor.name : null,
 							treatment: {
 								date: new Date(treatment.date),
@@ -84,6 +86,9 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 							duration: treatment.duration,
 							treatmentInProgress: addDays(new Date(treatment.date), treatment.duration) >= new Date()
 			            });
+						if(!treatment.prescription){
+							$scope.numberSelfMedication++;
+						}
 					});
 					$scope.numberInProgress = $scope.medicalRecordContents.filter(filterInProgress).length;
 
@@ -111,8 +116,7 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	$scope.$watchCollection('filters',  function(value) {
 		if($scope.filtered != undefined){
 			// Create filtered
-			console.log(value);
-			$scope.filtered = filterFilter(typeFilter($scope.medicalRecordContents, $scope.filters.allergyFilter, $scope.filters.illnessFilter, $scope.filters.prescriptionFilter, $scope.filters.inProgressFilter), value.search);
+			$scope.filtered = filterFilter(typeFilter($scope.medicalRecordContents, $scope.filters.allergyFilter, $scope.filters.illnessFilter, $scope.filters.prescriptionFilter, $scope.filters.inProgressFilter, $scope.filters.selfMedicationFilter), value.search);
 
 			// Then calculate noOfPages
 			$scope.updatePagination();
@@ -136,7 +140,7 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 
 
 	// Pagination
-	$scope.itemsPerPage = 5;
+	$scope.itemsPerPage = 10;
   	$scope.currentPage = 1;
 	$scope.noOfPages;
 

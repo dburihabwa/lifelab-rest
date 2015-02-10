@@ -26,6 +26,11 @@
             </li>
             <li>
                 <div class="input-group">
+                    <span class="input-group-addon"> <input type="checkbox" ng-model="filters.selfMedicationFilter" aria-label="selfMedication" id="selfMedication" ng-init="selfMedication=true" /> <label for="selfMedication"> Self-Medication </label> <span class="badge">{{numberSelfMedication}}</span> </span>
+                </div>
+            </li>
+            <li>
+                <div class="input-group">
                     <span class="input-group-addon"> <input type="checkbox" ng-model="filters.inProgressFilter" aria-label="inprogress" id="inProgressFilter" ng-init="inProgressFilter=false" /> <label for="inProgressFilter"> In progress </label> <span class="badge">{{numberInProgress}}</span> </span>
                 </div>
             </li>
@@ -45,7 +50,7 @@
         <ul class="list-group">
             <li ng-repeat="item in filtered | orderBy:predicate:reverse | startFrom: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage"
                 class="list-group-item"
-                ng-class=" { 'list-group-item-danger' : item.type == 'allergy', 'list-group-item-warning' : item.type == 'illness', 'list-group-item-success' : item.type == 'prescription' }">
+                ng-class=" { 'list-group-item-danger' : item.type == 'allergy', 'list-group-item-warning' : item.type == 'illness', 'list-group-item-success' : item.type == 'prescription', 'treatment' : item.type == 'treatment' }">
                 <div>
 
                     <div class="treatmentInProgress" ng-if="item.treatmentInProgress">
@@ -57,7 +62,7 @@
 
                     <!-- Content -->
                     <div ng-if="item.treatment">
-                        <p style="text-decoration:underline;"> treatment:</p>
+                        <p ng-if="item.type == 'prescription'" style="text-decoration:underline;"> treatment:</p>
                         <p>
                             <strong>{{item.treatment.medicine.name}}</strong>, {{item.treatment.quantity}} {{item.treatment.medicine.shape}} to be taken {{item.treatment.frequency}} /h, from <strong> {{item.treatment.date.toString()}} </strong> during <strong>{{item.duration}}</strong> days.
                         </p>
@@ -66,6 +71,7 @@
                     <!-- doctor and date -->
                     <p>
                         <span class="italic" ng-if="item.doctor"> <strong>by</strong> {{item.doctor}} </span>
+                        <span class="italic" ng-if="item.type == 'treatment'"> <strong>Self-medication</strong> </span>
                         <span class="italic date" ng-if="item.date"> <strong> date </strong> : {{item.date.toString()}} </span>
                     </p>
 
