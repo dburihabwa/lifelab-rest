@@ -1,0 +1,22 @@
+<div class = "medicalRecordContents" ng-controller = "TreatmentVisualizationCtrl">
+	<h3 class = "subTitle">Monitoring</h3>
+	<p>
+		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})">Back</a>
+	</p>
+	<table ng-repeat = "(day, intakes) in days | orderBy:day:reverse"class = "table table-bordered">
+		<thead>
+			<tr>
+				<th class = "text-center"><span class = "glyphicon glyphicon-calendar"></span>  {{day | date:medium}}</th>
+			</tr>
+		</thead>
+		<tr ng-repeat = "intake in intakes" ng-class="{'danger': intake.missed == true, 'success': intake.id}">
+			<td>
+				{{intake.time | date:'HH:mm'}}
+			</td>
+		</tr>
+	</table>
+
+	<p>
+		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})">Back</a>
+	</p>
+</div>
