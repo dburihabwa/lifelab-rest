@@ -2,7 +2,6 @@ patient:
     type:       rest
     resource:   LifeLab\RestBundle\Controller\PatientController
 
-
 file:
     type:       rest
     resource:   LifeLab\RestBundle\Controller\MedicalFileController
@@ -31,3 +30,7 @@ treatment:
 prescription:
     type:       rest
     resource:   LifeLab\RestBundle\Controller\PrescriptionController
+
+appointment:
+    type:       rest
+    resource:   LifeLab\RestBundle\Controller\AppointmentController
