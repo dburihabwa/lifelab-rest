@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Drop the database
-php app/console doctrine:database:drop
+php app/console doctrine:database:drop --force
 # Create the database
 php app/console doctrine:database:create
 # Generate getters/setters for your entities
