@@ -54,6 +54,12 @@
           url: '/prescription',
           templateUrl: 'views/index-homePatient-addPrescription.html',
           controller: 'PrescriptionCtrl'
+        })
+
+        .state('patientInformations.treatmentVisualization', {
+          url: '/treatmentVisualization/:treatmentId',
+          templateUrl: 'views/index-homePatient-treatmentVisualization.html',
+          controller: 'TreatmentVisualizationCtrl'
         });
 
         // sub state add prescription of patient's informations ...

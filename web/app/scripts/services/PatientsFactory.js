@@ -86,3 +86,19 @@ app.factory('MedicalRecords', ['$resource', '$http', function ($resource, $http)
 	};
 	return Factory;
 }]);
+
+
+app.factory('Treatments', ['$resource', '$http', function ($resource, $http) {
+	var treatment = $resource('/treatments/:id', {'id': '@id'});
+	var intakes = $resource('/treatments/:id/intakes/full', {'id': '@id'});
+
+	var factory = {
+		getTreatment: function (id) {
+			return treatment.get({'id': id}).$promise;
+		},
+		getIntakes: function (id) {
+			return intakes.query({'id': id}).$promise;
+		}
+	};
+	return factory;
+}]);
