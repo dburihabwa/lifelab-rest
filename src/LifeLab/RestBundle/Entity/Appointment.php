@@ -3,7 +3,6 @@
 namespace LifeLab\RestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Type;
@@ -28,13 +27,13 @@ class Appointment
    */
   private $id;
 
+
   /**
-   * @Type ("LifeLab\RestBundle\Entity\Patient")
-   * @ORM\ManyToOne(targetEntity="Patient")
-   * @ORM\JoinColumn(name="patient_id", referencedColumnName="id", nullable=false)
-   * @Expose
+   * @Type ("LifeLab\RestBundle\Entity\MedicalFile")
+   * @ORM\ManyToOne(targetEntity="MedicalFile")
+   * @ORM\JoinColumn(name="medical_file_id", referencedColumnName="id", nullable=false)
    */
-  private $patient;
+  private $medicalFile;
 
   /**
    * @Type ("LifeLab\RestBundle\Entity\Doctor")
@@ -44,7 +43,7 @@ class Appointment
    */
   private $doctor;
 
-  /**
+    /**
    * @var datetime
    * @Type ("DateTime")
    *
@@ -54,15 +53,60 @@ class Appointment
   private $date;
 
 
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  /**
+   * Set medicalFile
+   *
+   * @param \LifeLab\RestBundle\Entity\MedicalFile $medicalFile
+   * @return Appointment
+   */
+  public function setMedicalFile(\LifeLab\RestBundle\Entity\MedicalFile $medicalFile)
+  {
+    $this->medicalFile = $medicalFile;
+
+    return $this;
+  }
+
+  /**
+   * Get medicalFile
+   *
+   * @return \LifeLab\RestBundle\Entity\MedicalFile 
+   */
+  public function getMedicalFile()
+  {
+    return $this->medicalFile;
+  }
 
     /**
-     * Get id
+     * Set doctor
      *
-     * @return integer 
+     * @param \LifeLab\RestBundle\Entity\Doctor $doctor
+     * @return Appointment
      */
-    public function getId()
+    public function setDoctor(\LifeLab\RestBundle\Entity\Doctor $doctor)
     {
-        return $this->id;
+        $this->doctor = $doctor;
+
+        return $this;
+    }
+
+    /**
+     * Get doctor
+     *
+     * @return \LifeLab\RestBundle\Entity\Doctor 
+     */
+    public function getDoctor()
+    {
+        return $this->doctor;
     }
 
     /**
@@ -86,51 +130,5 @@ class Appointment
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set patient
-     *
-     * @param \LifeLab\RestBundle\Entity\Patient $patient
-     * @return Appointment
-     */
-    public function setPatient(\LifeLab\RestBundle\Entity\Patient $patient)
-    {
-        $this->patient = $patient;
-
-        return $this;
-    }
-
-    /**
-     * Get patient
-     *
-     * @return \LifeLab\RestBundle\Entity\Patient 
-     */
-    public function getPatient()
-    {
-        return $this->patient;
-    }
-
-    /**
-     * Set doctor
-     *
-     * @param \LifeLab\RestBundle\Entity\Doctor $doctor
-     * @return Appointment
-     */
-    public function setDoctor(\LifeLab\RestBundle\Entity\Doctor $doctor)
-    {
-        $this->doctor = $doctor;
-
-        return $this;
-    }
-
-    /**
-     * Get doctor
-     *
-     * @return \LifeLab\RestBundle\Entity\Doctor 
-     */
-    public function getDoctor()
-    {
-        return $this->doctor;
     }
 }
