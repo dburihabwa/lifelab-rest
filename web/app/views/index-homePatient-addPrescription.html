@@ -21,19 +21,25 @@
 		</div>
 		<div class = "form-group">
 			<label for = "date">Start date</label>
-			<input class = "form-control" ui-date id = "date" ng-model = "treatment.date" placeholder = "The day the treatment should start" required/>
+			<input class = "form-control" ui-date id = "date" ng-model = "treatment.date" placeholder = "First day of the treatment" data-toggle = "tooltip" data-placement = "top" title = "First day of the treatment"required/>
 		</div>
 		<div class = "form-group">
 			<label for = "frequency">Frequency</label>
-			<input id = "frequency" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.frequency"  placeholder = "How often should the patient take her/his medicaction" required/>
+			<div class = "input-group">
+				<input id = "frequency" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.frequency"  placeholder = "Number of hours between two doses" data-toggle = "tooltip" data-placement = "top" title = "Number of hours between two doses" required/>
+				<span class="input-group-addon">hours</span>
+			</div>
 		</div>
 		<div class = "form-group">
 			<label for = "quantity">Quantity</label>
-			<input id = "quantity" class = "form-control" type = "number" min = "0.5" step = "0.5" ng-model="treatment.quantity" placeholder = "Number of units per intake" required/>
+			<input id = "quantity" class = "form-control" type = "number" min = "0.5" step = "0.5" ng-model="treatment.quantity" placeholder = "Number of units per intake" data-toggle = "tooltip" data-placement = "top" title = "Number of units per intake" required/>
 		</div>
 			<div class = "form-group">
 			<label for = "duration">Duration</label>
-			<input id = "duration" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.duration" placeholder = "Duration in days" required/>
+			<div class = "input-group">
+				<input id = "duration" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.duration" placeholder = "Duration in days" data-toggle = "tooltip" data-placement = "top" title = "Duration in days" required/>
+				<span class="input-group-addon">days</span>
+			</div>
 		</div>
 		<button class = "btn btn-success pull-right" type = "button" data-toggle = "modal" data-target = "#prescriptionDoctorsModal">Prescribe</button>
 		<div class="modal fade" id = "prescriptionDoctorsModal">
