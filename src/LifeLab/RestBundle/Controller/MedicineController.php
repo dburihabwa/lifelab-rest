@@ -38,7 +38,7 @@ class MedicineController extends AbstractController {
 	    }
 	    $from = $this->getFromParameter($request);
 	    $query = $em->createQuery('SELECT m FROM LifeLabRestBundle:Medicine m WHERE m.name LIKE :keyword');
-	    $query->setParameters(array('keyword' => '%' . $keyword . '%'))
+	    $query->setParameters(array('keyword' => $keyword . '%'))
 	    	->setFirstResult($from)
 	    	->setMaxResults($limit);
 	    $medicines = $query->getResult();
