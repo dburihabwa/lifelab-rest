@@ -67,5 +67,5 @@
           url: '/appointment',
           templateUrl: 'views/index-homePatient-appointment.html',
           controller: 'AppointmentCtrl'
-        });;
+        });
   });

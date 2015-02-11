@@ -3,7 +3,56 @@
 <div class="medicalRecordContents">
     <h3 class="subTitle"> <img src="images/schedule-an-appointment.jpeg"> Appointments </h3>
 
-    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+    <!-- Calendar -->
+    <div ui-calendar="uiConfig.calendar" calendar="myCalendar" class="span8 calendar" ng-model="eventSources"></div>
 
-    <p> {{eventSources}} </p>
+    <div>
+        <p> Add a appointment :</p>
+
+        <!-- Form -->
+        <div class="modal fade" id = "prescriptionDoctorsModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Add an appointment :</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" ng-submit = "submit()" role = "form">
+                            <div class="form-group">
+                                <label for="date">date</label>
+                                <input class="form-control" ui-date id="date" ng-model="appointment.date" placeholder="Schedule" required/>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value = "Add" />
+                        </form>
+
+                        <select ng-model = "prescription.doctor" ng-options = "doctor.name for doctor in doctors" required></select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Leave</button>
+                        <input type="submit" class="btn btn-primary" value = "Confirm prescription" />
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- Error -->
+    <div class="modal fade alert" id="errorModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-alert">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Oops! An error occured</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>{{ error.title }}</h4>
+                    <p>{{ error.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>

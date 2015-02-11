@@ -45,6 +45,7 @@ app.factory('Doctors', ['$resource', function ($resource) {
 		getAll: function () {
 			return Doctors.query().$promise;
 		},
+
 		get: function (id) {
 			return Doctor.get({'id': id}).$promise;
 		}
@@ -101,4 +102,24 @@ app.factory('Treatments', ['$resource', '$http', function ($resource, $http) {
 		}
 	};
 	return factory;
+}]);
+
+app.factory('Appointments', ['$resource', '$http', function ($resource, $http) {
+	var Appointments = $resource('/appointments/search/:name', {name:'@name'});
+
+	var Factory = {
+		getAppointments: function(name){
+			return Appointments.query({'name': name}).$promise;
+		},
+
+		addAppointments: function(medicalRecordId, appointment ){
+			return $http({
+				'url': '/files/' + medicalRecordId + '/appointments',
+				'method': 'POST',
+				'data': appointment
+			});
+		}
+	};
+
+	return Factory;
 }]);
