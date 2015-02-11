@@ -1,8 +1,30 @@
 <div class = "medicalRecordContents" ng-controller = "TreatmentVisualizationCtrl">
 	<h3 class = "subTitle">Monitoring</h3>
 	<p>
-		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})">Back</a>
+		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})"><span class = "glyphicon glyphicon-menu-left"></span>Back</a>
 	</p>
+	<table ng-if = "treatment" class = "table table-striped table-bordered">
+		<tr>
+			<th>Medication</th>
+			<td>{{treatment.medicine.name}}</td>
+		</tr>
+		<tr>
+			<th>Start</th>
+			<td>{{treatment.date | date:medium}}</td>
+		</tr>
+		<tr>
+			<th>Duration</th>
+			<td>{{treatment.duration}} day(s)</td>
+		</tr>
+		<tr>
+			<th>Frequency</th>
+			<td>Every {{treatment.frequency}} hour(s)</td>
+		</tr>
+		<tr>
+			<th>Prescribed by</th>
+			<td>{{ treatment.prescription ? treatment.prescription.doctor.name : 'Auto medication'}}</td>
+		</tr>
+	</table>
 	<table ng-repeat = "(day, intakes) in days | orderBy:day:reverse"class = "table table-bordered">
 		<thead>
 			<tr>
@@ -17,6 +39,6 @@
 	</table>
 
 	<p>
-		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})">Back</a>
+		<a class = "btn btn-default" ui-sref = "patientInformations.medicalRecord({id:{{patient.id}}})"><span class = "glyphicon glyphicon-menu-left"></span>Back</a>
 	</p>
 </div>

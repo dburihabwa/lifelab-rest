@@ -29,7 +29,7 @@ class Intake
      * @Type ("DateTime")
      * @var \DateTime
      *
-     * @ORM\Column(name="time", type="datetime")
+     * @ORM\Column(name="time", type="datetimetz")
      */
     private $time;
 

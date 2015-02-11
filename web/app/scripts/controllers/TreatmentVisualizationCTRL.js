@@ -1,16 +1,23 @@
-app.controller('TreatmentVisualizationCtrl', ['$scope', '$stateParams', 'Treatments', function ($scope, $stateParams, Treatments) {
-	$scope.days = {};
+app.controller('TreatmentVisualizationCtrl', ['$scope', '$stateParams', 'Treatments', '$q', function ($scope, $stateParams, Treatments, $q) {
+	$scope.days;
+	$scope.treatment;
 	$scope.loadTreatment = function () {
-		if (Object.keys($scope.days).length > 0) {
+		if ($scope.days && $scope.treatment) {
 			return;
 		}
-		Treatments.getIntakes($stateParams.treatmentId).then(function (intakes) {
+		var promises = [
+			Treatments.getTreatment($stateParams.treatmentId),
+			Treatments.getIntakes($stateParams.treatmentId)
+		];
+		$q.all(promises).then(function (results) {
+			$scope.treatment = results[0];
 			var now = new Date();
+			var intakes = results[1];
+			$scope.days = {};
 			intakes.filter(function (intake) {
 				return (new Date(intake.time)).getTime() < now.getTime();
 			}).forEach(function (intake) {
 				var time = new Date(intake.time);
-				time = time.getTime() + (time.getTimezoneOffset() * 60 * 1000 * -1);
 				intake.time = new Date(time);
 				if (!intake.id && intake.time.getTime() < now.getTime()) {
 					intake.missed = true;
@@ -22,8 +29,7 @@ app.controller('TreatmentVisualizationCtrl', ['$scope', '$stateParams', 'Treatme
 				$scope.days[day].push(intake);
 			});
 		}, function (error) {
-			alert(error);
-			console.log(JSON.stringify(error));
+			alert(error.message);
 		});
 	};
 	$scope.loadTreatment();

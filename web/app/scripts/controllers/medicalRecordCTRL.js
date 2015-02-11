@@ -7,7 +7,7 @@
  * # medicalRecordCtrl
  * Controller of the lifeMonitorDoctorApp
  */
-app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Patients', 'filterFilter', 'typeFilter', function ($rootScope, $scope, $stateParams, Patients, filterFilter, typeFilter) {
+app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', '$location', 'Patients', 'filterFilter', 'typeFilter', function ($rootScope, $scope, $stateParams, $location, Patients, filterFilter, typeFilter) {
 	
 	$scope.medicalRecordContents = [];
 	$scope.numberOfAllergy = 0;
@@ -198,4 +198,8 @@ app.controller('medicalRecordCtrl', ['$rootScope', '$scope', '$stateParams', 'Pa
 	$scope.setPage = function(n) {
     	$scope.currentPage = n;
   	};
+
+    $scope.monitorTreatment = function (treatmentId) {
+        $location.path('/patients/' + $stateParams.id + '/treatmentVisualization/' + treatmentId);
+    };
 }]);

@@ -32,7 +32,7 @@ class Treatment
      * @var datetime
      * @Type ("DateTime")
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetimetz")
      * @Expose
      */
     private $date;
