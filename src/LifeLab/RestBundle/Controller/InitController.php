@@ -13,6 +13,7 @@ use LifeLab\RestBundle\Entity\Medicine;
 use LifeLab\RestBundle\Entity\Patient;
 use LifeLab\RestBundle\Entity\Prescription;
 use LifeLab\RestBundle\Entity\Treatment;
+use LifeLab\RestBundle\Entity\Appointment;
 
 use JMS\Serializer\SerializerBuilder;
 
@@ -95,16 +96,16 @@ class InitController extends Controller
     {
         $this->em = $this->getDoctrine()->getManager();
         
-        $allergy = new Allergy();
-        $allergy->setName('Noix');
+	$allergy = new Allergy();
+        $allergy->setName('Chat');
         $this->em->persist($allergy);
         $this->em->flush();
-        
-        $illness = new Illness();
-        $illness->setName('Grippe');
+                
+	$illness = new Illness();
+        $illness->setName('Shigellose');
         $this->em->persist($illness);
         $this->em->flush();
-        
+
         $medicine = new Medicine();
         $medicine->setName('bogus');
         $medicine->setShape('Pills');
@@ -154,6 +155,14 @@ class InitController extends Controller
         $this->em->persist($treatment);
         $this->em->flush();
         
+	$appointment = new Appointment();
+	$appointment->setMedicalFile($medicalFile);
+	$appointment->setDoctor($doctor);
+	$appointment->setDate(new \DateTime());
+	$this->em->persist($appointment);
+        $this->em->flush();
+
+
         // import medication data
         $this->importMedication();
         
