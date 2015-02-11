@@ -51,12 +51,10 @@
             <li ng-repeat="item in filtered | orderBy:predicate:reverse | startFrom: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage"
                 class="list-group-item"
                 ng-class=" { 'list-group-item-danger' : item.type == 'allergy', 'list-group-item-warning' : item.type == 'illness', 'list-group-item-success' : item.type == 'prescription', 'treatment' : item.type == 'treatment' }">
-                <div>
+                <div ng-click = "monitorTreatment(item.treatment.id)">
 
                     <div class="treatmentInProgress" ng-if="item.treatmentInProgress">
-                        <a ui-sref = "patientInformations.treatmentVisualization({id: $stateParams.id, treatmentId: {{item.treatment.id}}})">
-                            <p>treatment in progress</p>
-                        </a>
+                        <p>treatment in progress</p>
                     </div>
 
                     <!-- Type and name -->
