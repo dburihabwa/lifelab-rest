@@ -4,37 +4,24 @@
     <h3 class="subTitle"> <img src="images/schedule-an-appointment.jpeg"> Appointments </h3>
 
     <!-- Calendar -->
-    <div ui-calendar="uiConfig.calendar" calendar="myCalendar" class="span8 calendar" ng-model="eventSources"></div>
+    <div ui-calendar="uiConfig.calendar" calendar="myCalendar" class="span8 calendar" ng-model="eventSources"></div> <br />
 
-    <div>
-        <p> Add a appointment :</p>
-
-        <!-- Form -->
-        <div class="modal fade" id = "prescriptionDoctorsModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Add an appointment :</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-inline" ng-submit = "submit()" role = "form">
-                            <div class="form-group">
-                                <label for="date">date</label>
-                                <input class="form-control" ui-date id="date" ng-model="appointment.date" placeholder="Schedule" required/>
-                            </div>
-                            <input type="submit" class="btn btn-primary" value = "Add" />
-                        </form>
-
-                        <select ng-model = "prescription.doctor" ng-options = "doctor.name for doctor in doctors" required></select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Leave</button>
-                        <input type="submit" class="btn btn-primary" value = "Confirm prescription" />
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+    <!-- Requests of appointments -->
+    <div class="panel panel-primary" id="appointmentsRequests" ng-if="appointmentsRequests.length != 0">
+        <div class="panel-heading">
+            <h3 class="panel-title"> Requests for appointments : </h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group appointmentsRequests">
+                <li ng-repeat="item in appointmentsRequests" class="list-group-item" style="line-height: 3em;">
+                    <span> Appointment Of <strong> </strong> at <strong>{{formatDate(item.date)}} </strong> </span>
+                    <span id="options">
+                        <button type="button" class="btn btn-success" ng-click="acceptAppointment(item)">Accept</button>
+                        <button type="button" class="btn btn-danger" ng-click="cancelAppointment(item)">Cancel</button>
+                    <span>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Error -->

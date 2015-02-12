@@ -259,7 +259,10 @@ nav {
   border-width: 1px;
   border-style: solid;
   font-style: italic;
+}
 
+.treatment, .list-group-item-success {
+  cursor: zoom-in;
 }
 
 .modal-header-alert {
@@ -280,4 +283,17 @@ nav {
 
 .fc-day, .fc-widget-content, .fc-sun, .fc-past:hover {
   cursor: copy;
+}
+
+#appointmentsRequests{
+  margin-top: 3em;
+}
+
+#options {
+  float : right;
+}
+
+ul.appointmentsRequests {
+  width : 55em;
+  margin: auto;
 }

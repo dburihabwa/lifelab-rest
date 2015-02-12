@@ -1,47 +1,58 @@
 <div class="medicalRecordContents">
-	<h3 class = "subTitle"> <img src="images/medicalRecordicone.jpeg" /> Add a prescription </h3>
-	<form class = "simple-form" ng-submit = "submit()" role = "form">
+	<h3 class = "subTitle"> <img src="images/PrescriptionPad.jpg" /> Add a prescription </h3>
+	<form class = "form-horizontal" ng-submit = "submit()" role = "form">
 		<div id = "prescriptionForm" class = "form-group">
-			<label for = "medicine">Medication</label>
-			<ui-select
-				ng-model="treatment.medicine"
-				theme = "bootstrap"
-				ng-disabled="disabled"
-	            reset-search-input="false"
-	            required>
-				<ui-select-match ng-model = "key"
-					placeholder = "Medication">{{ $select.selected.name }}</ui-select-match>
-				<ui-select-choices
-					repeat = "medicine in medicines"
-					refresh="searchMedication($select.search)"
-	             	refresh-delay="0">
-	             	<small>{{ medicine.id }} : {{ medicine.name }}</small>
-				</ui-select-choices >
-			</ui-select>
-		</div>
-		<div class = "form-group">
-			<label for = "date">Start date</label>
-			<input class = "form-control" ui-date id = "date" ng-model = "treatment.date" placeholder = "First day of the treatment" data-toggle = "tooltip" data-placement = "top" title = "First day of the treatment"required/>
-		</div>
-		<div class = "form-group">
-			<label for = "frequency">Frequency</label>
-			<div class = "input-group">
-				<input id = "frequency" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.frequency"  placeholder = "Number of hours between two doses" data-toggle = "tooltip" data-placement = "top" title = "Number of hours between two doses" required/>
-				<span class="input-group-addon">hours</span>
+			<label for = "medicine" class="col-sm-2 control-label">Medication</label>
+			<div class="col-sm-10">
+				<ui-select
+					ng-model="treatment.medicine"
+					theme = "bootstrap"
+					ng-disabled="disabled"
+					reset-search-input="false"
+					required>
+					<ui-select-match ng-model = "key"
+						placeholder = "Medication">{{ $select.selected.name }}</ui-select-match>
+					<ui-select-choices
+						repeat = "medicine in medicines"
+						refresh="searchMedication($select.search)"
+						refresh-delay="0">
+						<small>{{ medicine.id }} : {{ medicine.name }}</small>
+					</ui-select-choices >
+				</ui-select>
 			</div>
 		</div>
 		<div class = "form-group">
-			<label for = "quantity">Quantity</label>
-			<input id = "quantity" class = "form-control" type = "number" min = "0.5" step = "0.5" ng-model="treatment.quantity" placeholder = "Number of units per intake" data-toggle = "tooltip" data-placement = "top" title = "Number of units per intake" required/>
+			<label for = "date" class="col-sm-2 control-label">Start date</label>
+			<div class="col-sm-10">
+				<input class = "form-control" ui-date id = "date" ng-model = "treatment.date" placeholder = "First day of the treatment" data-toggle = "tooltip" data-placement = "top" title = "First day of the treatment"required/>
+			</div>
 		</div>
-			<div class = "form-group">
-			<label for = "duration">Duration</label>
-			<div class = "input-group">
-				<input id = "duration" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.duration" placeholder = "Duration in days" data-toggle = "tooltip" data-placement = "top" title = "Duration in days" required/>
-				<span class="input-group-addon">days</span>
+		<div class = "form-group">
+			<label for = "frequency" class="col-sm-2 control-label">Frequency</label>
+			<div class="col-sm-10">
+				<div class = "input-group">
+					<input id = "frequency" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.frequency"  placeholder = "Number of hours between two doses" data-toggle = "tooltip" data-placement = "top" title = "Number of hours between two doses" required/>
+					<span class="input-group-addon">hours</span>
+				</div>
+			</div>
+		</div>
+		<div class = "form-group">
+			<label for = "quantity" class="col-sm-2 control-label">Quantity</label>
+			<div class="col-sm-10">
+				<input id = "quantity" class = "form-control" type = "number" min = "0.5" step = "0.5" ng-model="treatment.quantity" placeholder = "Number of units per intake" data-toggle = "tooltip" data-placement = "top" title = "Number of units per intake" required/>
+			</div>
+		</div>
+		<div class = "form-group">
+			<label for = "duration" class="col-sm-2 control-label">Duration</label>
+			<div class="col-sm-10">
+				<div class = "input-group">
+					<input id = "duration" class = "form-control" type = "number" min = "1" step = "1" ng-model="treatment.duration" placeholder = "Duration in days" data-toggle = "tooltip" data-placement = "top" title = "Duration in days" required/>
+					<span class="input-group-addon">days</span>
+				</div>
 			</div>
 		</div>
 		<button class = "btn btn-success pull-right" type = "button" data-toggle = "modal" data-target = "#prescriptionDoctorsModal">Prescribe</button>
+
 		<div class="modal fade" id = "prescriptionDoctorsModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -59,6 +70,7 @@
 		        </div><!-- /.modal-content -->
 		    </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+
 		<div class="modal fade alert" id = "errorModal">
 			<div class="modal-dialog">
 				<div class="modal-content">
