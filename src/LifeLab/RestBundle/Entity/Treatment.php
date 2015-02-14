@@ -90,7 +90,10 @@ class Treatment
      * @return LifeLab\RestBundle\Entity\Intake[] An array of intakes covering the duration of the treatment 
      */
     public function computeExpectedIntakes() {
-        $intakes = array();        
+        $intakes = array();
+        if ($this->duration <= 0) {
+            return $intakes;
+        }
         $date = clone $this->date;
         $duration = new \DateInterval('P' . $this->duration . 'D');
         $endDate = clone $this->date;
