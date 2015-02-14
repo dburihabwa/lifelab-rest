@@ -334,6 +334,12 @@ class MedicalFileController extends AbstractController {
       return $this->handleView($view);
     }
 
+    //Set confirmed flag to false by default
+    $appointment->setConfirmed(false);
+
+    //Set the patientId
+    $appointment->setPatientId($id);
+
     //Insert in the database
     $em = $this->getDoctrine()->getManager();
     $em->persist($appointment);

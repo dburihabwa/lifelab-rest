@@ -159,6 +159,8 @@ class InitController extends Controller
 	$appointment->setMedicalFile($medicalFile);
 	$appointment->setDoctor($doctor);
 	$appointment->setDate(new \DateTime());
+	$appointment->setConfirmed(false);
+	$appointment->setPatientId(1);
 	$this->em->persist($appointment);
         $this->em->flush();
 

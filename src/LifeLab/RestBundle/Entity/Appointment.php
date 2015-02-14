@@ -52,6 +52,24 @@ class Appointment
    */
   private $date;
 
+  /**
+   * @var boolean
+   * @Type ("boolean")
+   *
+   * @ORM\Column(name="confirmed", type="integer")
+   * @Expose
+   */
+  private $confirmed;
+
+  /**
+   * @var integer
+   * @Type ("integer")
+   *
+   * @ORM\Column(name="patientId", type="integer")
+   * @Expose
+   */
+  private $patientId;
+
 
   /**
    * Get id
@@ -130,5 +148,51 @@ class Appointment
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set confirmed
+     *
+     * @param integer $confirmed
+     * @return Appointment
+     */
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = $confirmed;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmed
+     *
+     * @return integer 
+     */
+    public function getConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * Set patientId
+     *
+     * @param integer $patientId
+     * @return Appointment
+     */
+    public function setPatientId($patientId)
+    {
+        $this->patientId = $patientId;
+
+        return $this;
+    }
+
+    /**
+     * Get patientId
+     *
+     * @return integer 
+     */
+    public function getPatientId()
+    {
+        return $this->patientId;
     }
 }

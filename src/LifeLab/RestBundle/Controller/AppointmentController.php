@@ -58,7 +58,29 @@ class AppointmentController extends AbstractController {
     $view = $this->view($appointments, $statusCode);
     return $this->handleView($view);
   }
+  
+  
+  public function putAction($id, Request $request) {
 
+    $appointment = $this->getEntity($id);
+    if ($appointment == NULL) {
+      throw new NotFoundHttpException('appointment not found');
+    }
+    $json = $request->getContent();
+    $serializer = SerializerBuilder::create()->build();
+    $newAppointment = $serializer->deserialize($json, 'LifeLab\RestBundle\Entity\Appointment', 'json');
+    
+    $appointment->setConfirmed($newAppointment->getConfirmed());
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($appointment);
+    $em->flush();
+    
+    $statusCode = 200;
+
+    $view = $this->view($appointment, $statusCode);
+    return $this->handleView($view);
+  }
+  
 }
 
 
