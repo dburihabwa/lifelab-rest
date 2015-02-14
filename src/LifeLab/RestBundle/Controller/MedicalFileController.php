@@ -101,7 +101,7 @@ class MedicalFileController extends AbstractController {
       $view = $this->view("Date field must be defined!", $statusCode);
       return $this->handleView($view);
     }
-    $today = new \DateTime('now', new \DatetimeZone('Europe/Paris'));
+    $today = new \DateTime('now');
     $today->setTime(0, 0, 0);
     if ($today > $treatment->getDate()) {
       $statusCode = 400;
