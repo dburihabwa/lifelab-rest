@@ -11,11 +11,11 @@
  * # medicalRecordCtrl
  * Controller of the lifeMonitorDoctorApp
  */
-app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$compile', 'Patients', 'uiCalendarConfig', 'Appointments', function ($rootScope, $scope, $stateParams, $compile, Patients, uiCalendarConfig, Appointments) {
+app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$compile', '$q', 'Patients', 'uiCalendarConfig', 'Appointments', function ($rootScope, $scope, $stateParams, $compile, $q, Patients, uiCalendarConfig, Appointments) {
 
     // Appointment to add
     $scope.appointment = {
-        // patientId: $stateParams.id,
+        patient_id: $stateParams.id, // patient id
         doctor : {"id":1,"name":"Dr Jekyll"},  // Doctor who add an appointment (by default)
         date: '' , // the date
         confirmed: true // confirmed by default
@@ -26,6 +26,7 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
 
     // ErrorInfo
     $scope.error = {};
+    $scope.messageAlert;
 
 
     // -- Calendar
@@ -38,29 +39,8 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
         currentTimezone: 'Europe/Paris' // an option!
     };
 
-    /* event source that contains custom events on the scope */
-    $scope.events = [
-        /*{
-            title: 'Title',
-            start: new Date(),
-            // end    : '2015-02-11',
-            allDay : false,
-            editable : true
-        }*/
-    ];
-
-    /* event source that calls a function on every view switch
-    $scope.eventsF = function (start, end, timezone, callback) {
-        var s = new Date(start).getTime() / 1000;
-        var e = new Date(end).getTime() / 1000;
-        var m = new Date(start).getMonth();
-        var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-        callback(events);
-    };
-    */
-
     /* event sources array*/
-    $scope.eventSources = [$scope.events, $scope.eventSource];
+    $scope.eventSources = [$scope.eventSource];
 
     /* On dayClick */
     $scope.OnDayClick = function( date, jsEvent, view){
@@ -68,27 +48,17 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
             // Add appointment : Fix me !
             $scope.appointment.date = date.toISOString().replace(/\.\d{3}/, '') + "+01:00";
             $scope.addEvent();
-
         } else {
             // Change view
             $scope.myCalendar.fullCalendar( 'changeView', 'agendaDay');
             $scope.myCalendar.fullCalendar('gotoDate', date);
         }
-
-
     };
 
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
-        //alert(date.title + ' was clicked ');
+        alert($scope.formatDate(date) + ' : ' + date.title);
     };
-
-    /*
-    // alert on Drop
-    $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
-        alert('Event Droped to make dayDelta ' + delta);
-    };
-    */
 
     // Function which add a appointment
     $scope.addEvent = function () {
@@ -97,7 +67,15 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
             function(medicalRecord){
                 Appointments.addAppointments(medicalRecord.id, $scope.appointment)
                     .success(function (data, status, headers, config) {
-                        $scope.myCalendar.fullCalendar('refetchEvents');
+                        $scope.updateAppointments();
+                        $scope.messageAlert = 'Appointment has benn added'
+                        setTimeout(function ()
+                        {
+                            $scope.$apply(function()
+                            {
+                                $scope.messageAlert = undefined;
+                            });
+                        }, 4000);
                     })
                     .error(function (data, status, headers, config) {
                         $scope.error.title = 'Could not save appointment';
@@ -113,50 +91,68 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
     };
 
     // Function which update doctor's appointments
-    $scope.updateAppointments = function(){
+    $scope.updateAppointments = function() {
+        var deferred = $q.defer();
 
         Appointments.getAppointments("Dr Jekyll").then(
             // getAppointments OK
-            function(appointments){
-                var appointmentsEvents = [];
+            function (appointments) {
                 var appointmentsRequests = [];
+                var events = [];
 
-                appointments.forEach(function (appointment) {
-                    if(appointment.confirmed){
-                        // Add event in calendar
-                        // Get patient name for event title
-                        Patients.getPatient(appointment.patientId).then(
-                            // getPatient OK
-                            function(patient){
-                                appointmentsEvents.push({
+                appointments.forEach(function (appointment, index) {
+                    // Get patient name for event title
+                    Patients.getPatient(appointment.patient_id).then(
+                        // getPatient OK
+                        function (patient) {
+                            if (appointment.confirmed) {
+                                // Add event in calendar
+                                events.push({
                                     title: 'Appointment with ' + patient.name,
                                     start: appointment.date
                                 });
-                            },
-                            // getPatient ERROR
-                            function(msg){
-                                $scope.error.title = 'Could not get appointments';
-                                $scope.error.message = msg;
-                                $('#errorModal').modal('show');
                             }
-                        );
-                    } else {
-                        // appointment not confirmed, Add appointment to Request list
-                        appointmentsRequests.push(appointment);
-                    }
+                            else {
+                                // appointment not confirmed, Add appointment to Request list
+                                appointmentsRequests.push({
+                                    appointment: appointment,
+                                    patientName: patient.name
+                                });
+                            }
+                            if(index == appointments.length -1){
+                                deferred.resolve({
+                                    appointmentsRequests : appointmentsRequests,
+                                    events : events
+                                });
+                            }
+                        },
+                        // getPatient ERROR
+                        function (msg) {
+                            $scope.error.title = 'Could not get appointments';
+                            $scope.error.message = msg;
+                            $('#errorModal').modal('show');
+                            deferred.reject();
+                        }
+                    );
                 });
-                $scope.appointmentsRequests = appointmentsRequests;
-                $scope.eventSource.events = appointmentsEvents;
-                $scope.myCalendar.fullCalendar('refetchEvents');
-
             },
             // getAppointments ERROR
             function(msg){
                 $scope.error.title = 'Could not get appointments';
                 $scope.error.message = msg;
                 $('#errorModal').modal('show');
+                deferred.reject();
             }
-        )
+        );
+
+        $q.all(deferred.promise).then(
+            function(appointments){
+                // update data
+                $scope.myCalendar.fullCalendar( 'removeEvents');
+                $scope.appointmentsRequests = appointments.appointmentsRequests;
+                $scope.eventSource.events = appointments.events;
+            }
+        );
     };
     $scope.updateAppointments();
 
@@ -210,13 +206,48 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
 
     // Accept an appointment
     $scope.acceptAppointment = function(appointment){
-        // TODO
-    }
+        // confirm the appointment
+        appointment.confirmed = true;
+
+        // update appointment with confirmed value
+        Appointments.update(appointment).then(
+            // getAppointments OK
+            function(appointments){
+                // update data
+                $scope.updateAppointments();
+                $scope.messageAlert = 'Appointment has been confirmed'
+                setTimeout(function ()
+                {
+                    $scope.$apply(function()
+                    {
+                        $scope.messageAlert = undefined;
+                    });
+                }, 4000);
+            },
+            // getAppointments ERROR
+            function(msg){
+                $scope.error.title = 'Could not update appointment';
+                $scope.error.message = msg;
+                $('#errorModal').modal('show');
+            }
+        )
+    };
 
     // Cancel an appointment
     $scope.cancelAppointment = function(appointment){
-        // TODO
+        Appointments.delete(appointment).then(
+            // getAppointments OK
+            function(appointments){
+                // update data
+                $scope.updateAppointments();
+
+            },
+            // getAppointments ERROR
+            function(msg){
+                $scope.error.title = 'Could not delete appointment';
+                $scope.error.message = msg;
+                $('#errorModal').modal('show');
+            }
+        )
     }
-
-
 }]);

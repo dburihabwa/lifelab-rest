@@ -281,7 +281,11 @@ nav {
   width: 25em;
 }
 
-.fc-day, .fc-widget-content, .fc-sun, .fc-past:hover {
+.fc-day, .fc-sun, .fc-past:hover, .fc-bg, .fc-row, .fc-content-skeleton, td[data-date] {
+  cursor: zoom-in;
+}
+
+.fc-widget-content{
   cursor: copy;
 }
 
