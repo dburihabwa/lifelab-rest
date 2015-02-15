@@ -335,8 +335,13 @@ class MedicalFileController extends AbstractController {
     }
 
     //Set confirmed flag to false by default
-    $appointment->setConfirmed(false);
-
+    $confirmed = $appointment->getConfirmed();
+    if ($confirmed){
+      $appointment->setConfirmed($confirmed);
+    }
+    else{
+      $appointment->setConfirmed(false);
+    }
     //Set the patientId
     $appointment->setPatientId($id);
 
