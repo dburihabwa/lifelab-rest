@@ -75,7 +75,7 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
                             {
                                 $scope.messageAlert = undefined;
                             });
-                        }, 4000);
+                        }, 3000);
                     })
                     .error(function (data, status, headers, config) {
                         $scope.error.title = 'Could not save appointment';
@@ -222,7 +222,7 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
                     {
                         $scope.messageAlert = undefined;
                     });
-                }, 4000);
+                }, 3000);
             },
             // getAppointments ERROR
             function(msg){
