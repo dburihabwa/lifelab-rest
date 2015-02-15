@@ -2,7 +2,10 @@
 
 namespace LifeLab\RestBundle\Tests\Controller;
 
+
 use LifeLab\RestBundle\Entity\Doctor;
+use LifeLab\RestBundle\Entity\MedicalFile;
+use LifeLab\RestBundle\Entity\Prescription;
 
 require_once dirname(__DIR__).'/../../../../app/AppKernel.php';
 
@@ -144,5 +147,43 @@ class DoctorControllerTest extends WebTestCase {
 			array('Content-Type' => 'application/json'),
 			NULL);
 		$this->assertEquals(404, $client->getResponse()->getstatusCode());
+	}
+
+	public function testDeleteDoctorTiedToPrescription() {
+		$doctor = new Doctor();
+		$doctor->setName('testPostDoctor');
+		$client = static::createClient();
+		$serializer = SerializerBuilder::create()->build();
+		$jsonContent = $serializer->serialize($doctor, 'json');
+		$client->request('POST',
+			'/doctors',
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			$jsonContent);
+		$this->assertEquals(200, $client->getResponse()->getstatusCode());
+		$doctor  = $serializer->deserialize($client->getResponse()->getContent(),
+			'LifeLab\RestBundle\Entity\Doctor',
+			'json');
+		$doctor = $this->entityManager->merge($doctor);
+		$medicalFile = new MedicalFile();
+		$this->entityManager->persist($medicalFile);
+		$prescription = new Prescription();
+		$prescription->setDate(new \Datetime());
+		$prescription->setDoctor($doctor);
+		$prescription->setMedicalFile($medicalFile);
+		$this->entityManager->persist($prescription);
+		$this->entityManager->flush();
+		$client->request('DELETE',
+			'/doctors/' . $doctor->getId(),
+			array(),
+			array(),
+			array('Content-Type' => 'application/json'),
+			NULL);
+		$this->assertEquals(500, $client->getResponse()->getstatusCode());
+		$this->entityManager->remove($prescription);
+		$this->entityManager->remove($doctor);
+		$this->entityManager->remove($medicalFile);
+		$this->entityManager->flush();
 	}
 }

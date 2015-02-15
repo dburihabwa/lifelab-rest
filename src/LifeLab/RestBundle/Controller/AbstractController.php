@@ -119,7 +119,7 @@ abstract class AbstractController extends FOSRestController {
         try {
             $manager->remove($entity);
             $manager->flush();
-        } catch (Exception $unusedException) {
+        } catch (\Doctrine\DBAL\DBALException $unusedException) {
             $statusCode = 500;
             $message = 'Could not delete resource';
             $view = $this->view($message, $statusCode);
