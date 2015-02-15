@@ -140,8 +140,8 @@ abstract class AbstractController extends FOSRestController {
         try {
             $manager->persist($entity);
             $manager->flush();
-        } catch (Exception $unusedException) {
-            $statusCode = 500;
+        } catch (\Doctrine\DBAL\DBALException $unusedException) {
+            $statusCode = 400;
             $message = 'Could not post new resource';
             $view = $this->view($message, $statusCode);
             return $this->handleView($view);
