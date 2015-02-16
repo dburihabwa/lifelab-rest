@@ -45,14 +45,12 @@ class AppointmentController extends AbstractController {
     $em = $this->getDoctrine()->getManager();
     $limitParameter = $request->query->get('limit');
     $limit = $this->getLimitParameter($request);
-    if ($limit == 0) {
-      $limit = 25;
-    }
+    
     $from = $this->getFromParameter($request);
     $query = $em->createQuery('SELECT a FROM LifeLabRestBundle:Appointment a, LifeLabRestBundle:Doctor d WHERE a.doctor = d.id AND d.name LIKE :keyword');
     $query->setParameters(array('keyword' => '%' . $keyword . '%'))
-      ->setFirstResult($from)
-      ->setMaxResults($limit);
+      ->setFirstResult($from);
+      
     $appointments = $query->getResult();
     $statusCode = 200;
     $view = $this->view($appointments, $statusCode);
