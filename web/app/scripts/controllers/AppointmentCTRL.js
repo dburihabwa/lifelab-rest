@@ -68,7 +68,7 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
                 Appointments.addAppointments(medicalRecord.id, $scope.appointment)
                     .success(function (data, status, headers, config) {
                         $scope.updateAppointments();
-                        $scope.messageAlert = 'Appointment has benn added'
+                        $scope.messageAlert = 'Appointment has been added'
                         setTimeout(function ()
                         {
                             $scope.$apply(function()
