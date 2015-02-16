@@ -56,8 +56,8 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
     };
 
     /* alert on eventClick */
-    $scope.alertOnEventClick = function( date, jsEvent, view){
-        alert($scope.formatDate(date) + ' : ' + date.title);
+    $scope.alertOnEventClick = function(calEvent, jsEvent, view){
+        alert($scope.formatDate(calEvent.start) + ' : ' + calEvent.title);
     };
 
     // Function which add a appointment
