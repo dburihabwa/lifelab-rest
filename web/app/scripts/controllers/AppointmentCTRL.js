@@ -201,7 +201,7 @@ app.controller('AppointmentCtrl', ['$rootScope', '$scope', '$stateParams', '$com
 
     // Display date format
     $scope.formatDate = function(dateString) {
-        return new moment(dateString).format("dddd, MMMM Do YYYY, h:mm:ss a");
+        return new moment(dateString.replace(/\+00:00/,"+01:00")).format("dddd, MMMM Do YYYY, h:mm:ss a");
     }
 
     // Accept an appointment
