@@ -1,3 +1,7 @@
+# lifelab-rest
+[![Build Status](https://ks.gnap.be/jenkins/buildStatus/icon?job=lifelab-rest)](https://ks.gnap.be/jenkins/job/lifelab-rest/)
+
+
 ## Requirements
 
 * php5
